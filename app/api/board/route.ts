@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 
+// Force dynamic rendering - API routes should not be statically generated
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const limitParam = url.searchParams.get("limit");
