@@ -25,9 +25,11 @@ type Edge = {
 
 const VIEW_WIDTH = 1000;
 const VIEW_HEIGHT = 700;
-const ASTERISK_NORMAL_SRC = "/asterisk-regular.svg";
-const ASTERISK_HEAVY_SRC = "/asterisk-bold.svg";
-const HEAVY_THRESHOLD = 2; // 0–1: normal, 2+ : heavy
+
+// Asterisk 아이콘 경로 (추천인 수에 따라)
+const ASTERISK_1_SRC = "/asterisk-regular.svg"; // 0명
+const ASTERISK_2_SRC = "/asterisk-bold.svg"; // 2명 이상
+const ASTERISK_3_SRC = "/asterisk-bold.svg"; // 5명 이상 (임시로 bold 사용, 나중에 별도 파일로 교체 가능)
 
 function lcg(seed: number) {
   let value = seed;
@@ -35,6 +37,13 @@ function lcg(seed: number) {
     value = (value * 1664525 + 1013904223) % 4294967296;
     return value / 4294967296;
   };
+}
+
+function getAsteriskSrc(count: number): string {
+  // 0명: asterisk_1, 2명 이상: asterisk_2, 5명 이상: asterisk_3
+  if (count >= 5) return ASTERISK_3_SRC;
+  if (count >= 2) return ASTERISK_2_SRC;
+  return ASTERISK_1_SRC; // 0명 또는 1명
 }
 
 export default function BoardPage() {
@@ -100,93 +109,142 @@ export default function BoardPage() {
   }, [responses]);
 
   return (
-    <main className="relative h-screen w-full overflow-hidden">
+    <main className="relative h-screen w-full overflow-hidden bg-[#181818]">
       {loading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950">
-          <p className="text-slate-300">Loading network...</p>
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#181818]">
+          <p className="text-white">Loading network...</p>
         </div>
       )}
       {error && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#181818]">
           <p className="text-red-400">{error}</p>
         </div>
       )}
 
       {!loading && !error && (
-        <div className="relative h-full w-full bg-slate-950">
-          <header className="absolute top-0 left-0 z-10 px-6 py-4 space-y-2">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors pointer-events-auto"
+        <>
+          {/* 상단 왼쪽 로고 */}
+          <div className="absolute left-[72px] top-[64px] z-10 flex flex-col gap-[13.123px] items-center w-[166px] pointer-events-none">
+            <div className="h-[34.775px] w-[151.565px] relative">
+              <img 
+                alt="로고" 
+                className="block w-full h-full" 
+                src="/assets/b0d2c79f53b836588667a1c43cb5cf37d3c5563b.svg" 
+              />
+            </div>
+            <p className="text-[26.245px] text-white font-semibold">
+              ⠑⠥⠊⠍⠺⠨⠻⠇⠒
+            </p>
+          </div>
+
+          {/* 네트워크 그래프 */}
+          <div className="relative h-full w-full">
+            <svg
+              viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
+              className="h-full w-full"
+              preserveAspectRatio="xMidYMid meet"
             >
-              <span>←</span> Back to home
-            </Link>
-            <div className="space-y-1 pointer-events-none">
-              <p className="text-sm font-semibold text-blue-400">Board</p>
-              <h1 className="text-2xl font-bold text-white sm:text-3xl">
-                Year-End Recap Network
-              </h1>
-              <p className="text-sm text-slate-300">
-                Each * is a recap. Lines show who recommended whom.
+              {/* 연결선 */}
+              <g stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1">
+                {edges.map((edge, idx) => {
+                  const dx = edge.to.x - edge.from.x;
+                  const dy = edge.to.y - edge.from.y;
+                  const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+                  const length = Math.sqrt(dx * dx + dy * dy);
+                  
+                  return (
+                    <g key={idx} transform={`translate(${edge.from.x}, ${edge.from.y})`}>
+                      <line
+                        x1={0}
+                        y1={0}
+                        x2={length}
+                        y2={0}
+                        transform={`rotate(${angle})`}
+                      />
+                    </g>
+                  );
+                })}
+              </g>
+
+              {/* 노드들 */}
+              <g>
+                {nodes.map((node) => {
+                  const count = outgoingCounts.get(node.id) ?? 0;
+                  return (
+                    <g
+                      key={node.id}
+                      transform={`translate(${node.x}, ${node.y})`}
+                      className="cursor-pointer"
+                      onClick={() => setSelected(node)}
+                    >
+                      {/* Asterisk 아이콘 */}
+                      <image
+                        href={getAsteriskSrc(count)}
+                        x={-11}
+                        y={-19}
+                        width={22}
+                        height={count >= 5 ? 19 : 22}
+                        className="opacity-100"
+                      />
+                      {/* 이름 */}
+                      <text
+                        x={0}
+                        y={4}
+                        textAnchor="middle"
+                        className="text-[12px] fill-white pointer-events-none font-normal"
+                      >
+                        {node.name}
+                      </text>
+                    </g>
+                  );
+                })}
+              </g>
+            </svg>
+          </div>
+
+          {/* 하단 오른쪽 범례 */}
+          <div className="absolute bottom-[64px] right-[64.6px] z-10 flex gap-[12px] items-center pointer-events-none">
+            <div className="flex flex-col gap-[8px] items-center w-[22px]">
+              <div className="h-[22px] w-[22px] relative">
+                <img 
+                  alt="asterisk_1" 
+                  className="block w-full h-full" 
+                  src={ASTERISK_1_SRC} 
+                />
+              </div>
+              <p className="text-[12px] text-white text-center w-full font-normal">
+                ≥1
               </p>
             </div>
-          </header>
-          <svg
-            viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
-            className="h-full w-full"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <g stroke="rgba(148, 163, 184, 0.5)" strokeWidth="1">
-              {edges.map((edge, idx) => (
-                <line
-                  key={idx}
-                  x1={edge.from.x}
-                  y1={edge.from.y}
-                  x2={edge.to.x}
-                  y2={edge.to.y}
+            <div className="flex flex-col gap-[8px] items-start w-[19.395px]">
+              <div className="h-[20.576px] w-[18.057px] relative">
+                <img 
+                  alt="asterisk_2" 
+                  className="block w-full h-full" 
+                  src={ASTERISK_2_SRC} 
                 />
-              ))}
-            </g>
-            <g>
-              {nodes.map((node) => (
-                <g
-                  key={node.id}
-                  transform={`translate(${node.x}, ${node.y})`}
-                  className="cursor-pointer"
-                  onClick={() => setSelected(node)}
-                >
-                  <circle
-                    r={9}
-                    fill="white"
-                    className="opacity-0"
-                  />
-                  <image
-                    href={
-                      (outgoingCounts.get(node.id) ?? 0) >= HEAVY_THRESHOLD
-                        ? ASTERISK_HEAVY_SRC
-                        : ASTERISK_NORMAL_SRC
-                    }
-                    x={-10}
-                    y={-10}
-                    width={20}
-                    height={20}
-                    className="opacity-80 hover:opacity-100"
-                  />
-                  <text
-                    x={0}
-                    y={24}
-                    textAnchor="middle"
-                    className="text-xs fill-slate-300 pointer-events-none"
-                  >
-                    {node.name}
-                  </text>
-                </g>
-              ))}
-            </g>
-          </svg>
-        </div>
+              </div>
+              <p className="text-[12px] text-white w-full font-normal">
+                ≥2
+              </p>
+            </div>
+            <div className="flex flex-col gap-[8px] items-start w-[18px]">
+              <div className="h-[19px] w-[18px] relative">
+                <img 
+                  alt="asterisk_3" 
+                  className="block w-full h-full" 
+                  src={ASTERISK_3_SRC} 
+                />
+              </div>
+              <p className="text-[12px] text-white w-full font-normal">
+                ≥5
+              </p>
+            </div>
+          </div>
+        </>
       )}
 
+      {/* 선택된 노드 상세 정보 모달 */}
       {selected && (
         <div
           className="fixed inset-0 z-20 flex items-center justify-center bg-black/50 px-4"
@@ -234,4 +292,3 @@ export default function BoardPage() {
     </main>
   );
 }
-

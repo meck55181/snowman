@@ -1,3 +1,6 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +11,7 @@
 
 body {
   @apply min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-900;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
 a {
@@ -16,5 +20,23 @@ a {
 
 button {
   @apply transition-colors;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.animate-blink {
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+/* 점자 폰트 적용 - Noto Sans Symbols 2 사용 */
+.braille {
+  font-family: 'Noto Sans Symbols 2', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 

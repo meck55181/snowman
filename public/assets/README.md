@@ -1,0 +1,25 @@
+# 필요한 이미지 파일 목록
+
+다음 이미지 파일들을 이 폴더에 넣어주세요:
+
+## 로고 파일
+- 4b737a59b34927c932bd0bcc16fbcd62978292b6.svg (연말 결산 로고)
+- d680040e57e3146b77c6e459b741b224b1bd5fcb.svg (연말정산 로고)
+
+## 아이콘 파일
+- b0d2c79f53b836588667a1c43cb5cf37d3c5563b.svg
+- 10f6f129c67e5cdbc9e02af1dd96f1719624de84.svg
+- c4a5f30a21a93bc14e229b54b0feb54c9778e529.svg
+- 09f01a3d3a3014f6124c040de9397d511a27f10a.svg
+
+## 사람 이미지
+- c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png
+- 8518a8fe65a2e7beedb844a206042ab586e2fc05.png
+
+## 화살표 이미지
+- 61a5c07473a8ccd00d5696556c154563bff18310.svg
+- 5ac43280902121d2474e319f8c96aaf0ff04c712.svg
+- bbfd2a48e94e74f7512ec2f38a97650b6ef94794.svg
+- be52adc08ab42865f61605453ded2c74ae0fdc44.svg
+- 9041dcc8461eb2bc9e2a205f5744082cda7aa3e5.svg
+
