@@ -132,7 +132,7 @@ export default function BoardPage() {
                 src="/assets/모두의결산_로고.svg" 
               />
             </div>
-            <p className="text-[26.245px] text-white font-semibold font-mono">
+            <p className="text-[26.245px] text-white font-semibold">
               ⠑⠥⠊⠍⠺⠨⠻⠇⠒
             </p>
           </div>
@@ -181,7 +181,7 @@ export default function BoardPage() {
                       <image
                         href={getAsteriskSrc(count)}
                         x={-11}
-                        y={-19}
+                        y={-24}
                         width={22}
                         height={count >= 5 ? 19 : 22}
                         className="opacity-100"
