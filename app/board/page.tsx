@@ -123,6 +123,16 @@ export default function BoardPage() {
 
       {!loading && !error && (
         <>
+          {/* 상단 왼쪽 돌아가기 링크 */}
+          <div className="absolute left-4 top-4 sm:left-8 sm:top-8 z-20 pointer-events-auto">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-sm text-white hover:text-slate-300 transition-colors"
+            >
+              <span>←</span> 돌아가기
+            </Link>
+          </div>
+
           {/* 상단 왼쪽 로고 */}
           <div className="absolute left-[72px] top-[64px] z-10 flex flex-col gap-[13.123px] items-center w-[166px] pointer-events-none">
             <div className="h-[34.775px] w-[151.565px] relative">
@@ -132,7 +142,7 @@ export default function BoardPage() {
                 src="/assets/모두의결산_로고.svg" 
               />
             </div>
-            <p className="text-[26.245px] text-white font-semibold">
+            <p className="text-[26.245px] text-white font-semibold" style={{ fontFamily: "'Noto Sans Symbols 2', 'Pretendard', sans-serif" }}>
               ⠑⠥⠊⠍⠺⠨⠻⠇⠒
             </p>
           </div>
@@ -181,7 +191,7 @@ export default function BoardPage() {
                       <image
                         href={getAsteriskSrc(count)}
                         x={-11}
-                        y={-24}
+                        y={-19}
                         width={22}
                         height={count >= 5 ? 19 : 22}
                         className="opacity-100"
@@ -189,7 +199,7 @@ export default function BoardPage() {
                       {/* 이름 */}
                       <text
                         x={0}
-                        y={4}
+                        y={8}
                         textAnchor="middle"
                         className="text-[12px] fill-white pointer-events-none font-normal"
                       >
@@ -213,7 +223,7 @@ export default function BoardPage() {
                 />
               </div>
               <p className="text-[12px] text-white text-center w-full font-normal">
-                ≥1
+                ≥0
               </p>
             </div>
             <div className="flex flex-col gap-[8px] items-start w-[19.395px]">
