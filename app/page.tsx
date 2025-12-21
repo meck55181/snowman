@@ -73,7 +73,7 @@ export default function Home() {
             <img 
               alt="" 
               className="block w-full h-full" 
-              src="http://localhost:3845/assets/b0d2c79f53b836588667a1c43cb5cf37d3c5563b.svg" 
+              src="/assets/b0d2c79f53b836588667a1c43cb5cf37d3c5563b.svg" 
             />
           </div>
         </div>
@@ -99,7 +99,7 @@ export default function Home() {
                 <img 
                   alt="연말정산 로고" 
                   className="block w-full h-full object-contain" 
-                  src="http://localhost:3845/assets/d680040e57e3146b77c6e459b741b224b1bd5fcb.svg" 
+                  src="/assets/d680040e57e3146b77c6e459b741b224b1bd5fcb.svg" 
                 />
               </div>
 
@@ -141,7 +141,7 @@ export default function Home() {
                   <div className="rotate-[166.393deg] skew-x-[6.608deg]">
                     <div className="relative w-[121.049px] h-full">
                       <div className="absolute inset-[-4.57px_-0.51%_-4.57px_0]">
-                        <img alt="" className="block max-w-none w-full h-full" src="http://localhost:3845/assets/61a5c07473a8ccd00d5696556c154563bff18310.svg" />
+                        <img alt="" className="block max-w-none w-full h-full" src="/assets/61a5c07473a8ccd00d5696556c154563bff18310.svg" />
                       </div>
                     </div>
                   </div>
@@ -150,7 +150,7 @@ export default function Home() {
                   <div className="rotate-[13.607deg] scale-y-[-100%] skew-x-[6.608deg]">
                     <div className="relative w-[121.049px] h-full">
                       <div className="absolute inset-[-4.57px_-0.51%_-4.57px_0]">
-                        <img alt="" className="block max-w-none w-full h-full" src="http://localhost:3845/assets/5ac43280902121d2474e319f8c96aaf0ff04c712.svg" />
+                        <img alt="" className="block max-w-none w-full h-full" src="/assets/5ac43280902121d2474e319f8c96aaf0ff04c712.svg" />
                       </div>
                     </div>
                   </div>
@@ -159,7 +159,7 @@ export default function Home() {
                   <div className="rotate-[90deg]">
                     <div className="relative w-[27px] h-full">
                       <div className="absolute inset-[-4.57px_-2.3%_-4.57px_0]">
-                        <img alt="" className="block max-w-none w-full h-full" src="http://localhost:3845/assets/bbfd2a48e94e74f7512ec2f38a97650b6ef94794.svg" />
+                        <img alt="" className="block max-w-none w-full h-full" src="/assets/bbfd2a48e94e74f7512ec2f38a97650b6ef94794.svg" />
                       </div>
                     </div>
                   </div>
@@ -168,7 +168,7 @@ export default function Home() {
                   <div className="rotate-[6.306deg]">
                     <div className="relative w-[251px] h-full">
                       <div className="absolute inset-[-4.57px_-0.25%_-4.57px_0]">
-                        <img alt="" className="block max-w-none w-full h-full" src="http://localhost:3845/assets/be52adc08ab42865f61605453ded2c74ae0fdc44.svg" />
+                        <img alt="" className="block max-w-none w-full h-full" src="/assets/be52adc08ab42865f61605453ded2c74ae0fdc44.svg" />
                       </div>
                     </div>
                   </div>
@@ -177,7 +177,7 @@ export default function Home() {
                   <div className="rotate-[90deg]">
                     <div className="relative w-[26px] h-full">
                       <div className="absolute inset-[-4.57px_-2.39%_-4.57px_0]">
-                        <img alt="" className="block max-w-none w-full h-full" src="http://localhost:3845/assets/9041dcc8461eb2bc9e2a205f5744082cda7aa3e5.svg" />
+                        <img alt="" className="block max-w-none w-full h-full" src="/assets/9041dcc8461eb2bc9e2a205f5744082cda7aa3e5.svg" />
                       </div>
                     </div>
                   </div>
@@ -186,7 +186,7 @@ export default function Home() {
                   <div className="rotate-[90deg]">
                     <div className="relative w-[26px] h-full">
                       <div className="absolute inset-[-4.57px_-2.39%_-4.57px_0]">
-                        <img alt="" className="block max-w-none w-full h-full" src="http://localhost:3845/assets/9041dcc8461eb2bc9e2a205f5744082cda7aa3e5.svg" />
+                        <img alt="" className="block max-w-none w-full h-full" src="/assets/9041dcc8461eb2bc9e2a205f5744082cda7aa3e5.svg" />
                       </div>
                     </div>
                   </div>
@@ -195,7 +195,7 @@ export default function Home() {
                   <div className="rotate-[90deg]">
                     <div className="relative w-[26px] h-full">
                       <div className="absolute inset-[-4.57px_-2.39%_-4.57px_0]">
-                        <img alt="" className="block max-w-none w-full h-full" src="http://localhost:3845/assets/9041dcc8461eb2bc9e2a205f5744082cda7aa3e5.svg" />
+                        <img alt="" className="block max-w-none w-full h-full" src="/assets/9041dcc8461eb2bc9e2a205f5744082cda7aa3e5.svg" />
                       </div>
                     </div>
                   </div>
@@ -242,7 +242,7 @@ export default function Home() {
                   <img 
                     alt="연말 결산 로고" 
                     className="block w-full h-full object-contain" 
-                    src="http://localhost:3845/assets/4b737a59b34927c932bd0bcc16fbcd62978292b6.svg" 
+                    src="/assets/4b737a59b34927c932bd0bcc16fbcd62978292b6.svg" 
                   />
                 </div>
                 <div className="flex flex-col gap-[16px] items-start w-full">
@@ -251,10 +251,10 @@ export default function Home() {
                     <div className="flex flex-col gap-[4px] h-[80px] items-center w-[128px] relative">
                       <div className="relative w-[121.549px] h-[44.376px]">
                         <div className="absolute top-0 left-[15.5px] w-[12.367px] h-[13.383px]">
-                          <img alt="" className="block w-full h-full" src="http://localhost:3845/assets/10f6f129c67e5cdbc9e02af1dd96f1719624de84.svg" />
+                          <img alt="" className="block w-full h-full" src="/assets/10f6f129c67e5cdbc9e02af1dd96f1719624de84.svg" />
                         </div>
                         <div className="absolute top-[4.23px] left-0 w-[121.549px] h-[44.376px]">
-                          <img alt="" className="block w-full h-full" src="http://localhost:3845/assets/c4a5f30a21a93bc14e229b54b0feb54c9778e529.svg" />
+                          <img alt="" className="block w-full h-full" src="/assets/c4a5f30a21a93bc14e229b54b0feb54c9778e529.svg" />
                         </div>
                       </div>
                       <p className="text-[16.905px] font-semibold text-black text-center">(집이면 어때)</p>
@@ -269,13 +269,13 @@ export default function Home() {
                     <div className="flex flex-col gap-[4px] h-[80px] items-center w-[128px] relative">
                       <div className="relative w-[128px] h-[58px]">
                         <div className="absolute top-[0.02px] left-0 w-[58px] h-[58px]">
-                          <img alt="man 3" className="absolute inset-0 w-full h-full object-cover object-center" src="http://localhost:3845/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" />
+                          <img alt="man 3" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" />
                         </div>
                         <div className="absolute top-[0.02px] left-[34.61px] w-[58px] h-[58px]">
-                          <img alt="man 1" className="absolute inset-0 w-full h-full object-cover object-center" src="http://localhost:3845/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" />
+                          <img alt="man 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" />
                         </div>
                         <div className="absolute top-[0.02px] left-[69.61px] w-[58px] h-[58px]">
-                          <img alt="man 2" className="absolute inset-0 w-full h-full object-cover object-center" src="http://localhost:3845/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" />
+                          <img alt="man 2" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" />
                         </div>
                       </div>
                       <p className="text-[16.905px] font-semibold text-black text-center">(모두가 궁금해)</p>
@@ -291,12 +291,12 @@ export default function Home() {
                       <div className="absolute top-0 left-0 w-[76.671px] h-[76.671px] flex items-center justify-center">
                         <div className="rotate-[5.754deg]">
                           <div className="relative w-[70.005px] h-[70.005px]">
-                            <img alt="man (2) 1" className="absolute inset-0 w-full h-full object-cover object-center" src="http://localhost:3845/assets/8518a8fe65a2e7beedb844a206042ab586e2fc05.png" />
+                            <img alt="man (2) 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/8518a8fe65a2e7beedb844a206042ab586e2fc05.png" />
                           </div>
                         </div>
                       </div>
                       <div className="absolute top-[0.25px] left-[66.02px] w-[13.495px] h-[14.603px]">
-                        <img alt="" className="block w-full h-full" src="http://localhost:3845/assets/09f01a3d3a3014f6124c040de9397d511a27f10a.svg" />
+                        <img alt="" className="block w-full h-full" src="/assets/09f01a3d3a3014f6124c040de9397d511a27f10a.svg" />
                       </div>
                       <div className="absolute top-[30.97px] left-[63.62px] w-[64.377px] h-[43.645px]">
                         <p className="text-[16.905px] font-semibold text-black leading-normal">

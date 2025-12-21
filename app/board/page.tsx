@@ -199,7 +199,7 @@ export default function BoardPage() {
                       {/* 이름 */}
                       <text
                         x={0}
-                        y={8}
+                        y={16}
                         textAnchor="middle"
                         className="text-[12px] fill-white pointer-events-none font-normal"
                       >
@@ -255,50 +255,122 @@ export default function BoardPage() {
       )}
 
       {/* 선택된 노드 상세 정보 모달 */}
-      {selected && (
-        <div
-          className="fixed inset-0 z-20 flex items-center justify-center bg-black/50 px-4"
-          onClick={() => setSelected(null)}
-        >
+      {selected && (() => {
+        // content를 JSON으로 파싱 시도
+        let contentData: any = {};
+        try {
+          contentData = JSON.parse(selected.content);
+        } catch {
+          // JSON이 아니면 기존 형식으로 처리
+          contentData = { content: selected.content };
+        }
+
+        return (
           <div
-            className="max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-xl ring-1 ring-slate-200"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-20 flex items-center justify-center bg-black/50 px-4"
+            onClick={() => setSelected(null)}
           >
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div>
-                <h2 className="text-lg font-semibold text-slate-900">
-                  {selected.name}
-                </h2>
-                <p className="text-xs text-slate-500">
-                  {new Date(selected.created_at).toLocaleString()}
-                </p>
-              </div>
+            <div
+              className="relative bg-[#eee] border border-black w-full max-w-[506px] overflow-y-auto"
+              style={{ maxHeight: '80vh' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* 상단 점자 텍스트 */}
+              <p className="absolute left-1/2 -translate-x-1/2 top-[32px] text-[19.879px] text-black font-normal text-nowrap" style={{ fontFamily: "'Noto Sans Symbols 2', 'Pretendard', sans-serif" }}>
+                ⠡⠑⠂⠨⠻⠇⠒
+              </p>
+
+              {/* X 버튼 */}
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-200"
+                className="absolute right-[32.91px] top-[32px] w-[12px] h-[12px]"
               >
-                ESC
+                <div className="absolute inset-[-5.89%]">
+                  <img alt="닫기" className="block w-full h-full" src="/assets/X.svg" />
+                </div>
               </button>
-            </div>
 
-            <dl className="mb-4 space-y-1 text-sm text-slate-700">
-              <div className="flex gap-2">
-                <dt className="w-32 font-medium">My Instagram</dt>
-                <dd>@{selected.insta}</dd>
-              </div>
-              <div className="flex gap-2">
-                <dt className="w-32 font-medium">Recommender</dt>
-                <dd>@{selected.recommender_insta}</dd>
-              </div>
-            </dl>
+              {/* 메인 컨텐츠 */}
+              <div className="flex flex-col gap-[8px] items-end pt-[96px] pb-[32px] px-[55px]">
+                <div className="flex flex-col gap-[24px] items-start w-full">
+                  {/* Q1: 올해의 나를 대표하는 낱말은? */}
+                  <div className="flex flex-col gap-[8px] items-start w-full">
+                    <div className="flex gap-[8px] items-center w-full">
+                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[52px]">
+                        <p className="text-[12px] text-black font-medium text-nowrap">1</p>
+                      </div>
+                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[336px]">
+                        <p className="text-[12px] text-black font-medium text-nowrap">올해의 나를 대표하는 낱말은?</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start w-full">
+                      <div className="bg-white border border-black flex gap-[5.145px] h-[36px] items-center justify-center p-[5.145px] w-full relative">
+                        <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q1Word || '낱말 답변'}</p>
+                        <div className="absolute left-[15px] top-[14px] w-[8px] h-[6px]">
+                          <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
+                        </div>
+                      </div>
+                      <div className="bg-white border-x border-b border-black flex h-[72px] items-center justify-center p-[5.145px] w-full">
+                        <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q1Story || '낱말 스토리 답변'}</p>
+                      </div>
+                    </div>
+                  </div>
 
-            <div className="rounded-xl bg-slate-50 p-4 text-sm text-slate-800 ring-1 ring-slate-200">
-              <p className="whitespace-pre-line">{selected.content}</p>
+                  {/* Q2: 올해 가장 기억에 장면 하나는? */}
+                  <div className="flex flex-col gap-[8px] items-start w-full">
+                    <div className="flex gap-[8px] h-[35px] items-center w-full">
+                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[52px]">
+                        <p className="text-[12px] text-black font-medium text-nowrap">2</p>
+                      </div>
+                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[336px]">
+                        <p className="text-[12px] text-black font-medium text-nowrap">올해 가장 기억에 장면 하나는?</p>
+                      </div>
+                    </div>
+                    <div className="bg-white border border-black flex h-[36px] items-center justify-center p-[5.145px] w-full">
+                      <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q2Memory || '올해 가장 기억에 장면 답변'}</p>
+                    </div>
+                  </div>
+
+                  {/* Q3: 올해 내가 살았던 도시에게 하고 싶은 말은? */}
+                  <div className="flex flex-col gap-[8px] items-start w-full">
+                    <div className="flex gap-[8px] items-center w-full">
+                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[52px]">
+                        <p className="text-[12px] text-black font-medium text-nowrap">3</p>
+                      </div>
+                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[336px]">
+                        <p className="text-[12px] text-black font-medium text-nowrap">올해 내가 살았던 도시에게 하고 싶은 말은?</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start w-full">
+                      <div className="bg-white border border-black flex gap-[5.145px] h-[36px] items-center justify-center p-[5.145px] w-full relative">
+                        <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q3City || '도시 답변'}</p>
+                        <div className="absolute left-[15px] top-[14px] w-[8px] h-[6px]">
+                          <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
+                        </div>
+                      </div>
+                      <div className="bg-white border-x border-b border-black flex h-[73px] items-center justify-center p-[5.145px] w-full">
+                        <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q3Message || '도시에게 하고 싶은 말 답변'}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 모두에게 하고 싶은 말 */}
+                  <div className="bg-[#f7e982] border border-black flex h-[41.414px] items-center justify-center p-[5.145px] w-full">
+                    <p className="text-[12px] text-black font-medium text-nowrap">{contentData.finalMessage || '모두에게 하고 싶은 말 답변'}</p>
+                  </div>
+                </div>
+
+                {/* 엔딩송 */}
+                <div className="flex gap-[7px] items-center text-[12px] text-black text-nowrap">
+                  <p className="font-medium" style={{ fontFamily: "'Noto Sans Symbols', 'Pretendard', sans-serif" }}>♫ 엔딩송: </p>
+                  <p className="font-medium">good goodbye - 화사</p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </main>
   );
 }
