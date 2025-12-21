@@ -9,7 +9,7 @@ export default function InfoPage() {
             <img 
               alt="연말 결산 로고" 
               className="block w-full h-full object-contain" 
-              src="http://localhost:3845/assets/4b737a59b34927c932bd0bcc16fbcd62978292b6.svg" 
+              src="/assets/4b737a59b34927c932bd0bcc16fbcd62978292b6.svg" 
             />
           </div>
 
@@ -23,14 +23,14 @@ export default function InfoPage() {
                     <img 
                       alt="" 
                       className="block w-full h-full" 
-                      src="http://localhost:3845/assets/10f6f129c67e5cdbc9e02af1dd96f1719624de84.svg" 
+                      src="/assets/10f6f129c67e5cdbc9e02af1dd96f1719624de84.svg" 
                     />
                   </div>
                   <div className="absolute top-[4.23px] left-0 w-[121.549px] h-[44.376px]">
                     <img 
                       alt="" 
                       className="block w-full h-full" 
-                      src="http://localhost:3845/assets/c4a5f30a21a93bc14e229b54b0feb54c9778e529.svg" 
+                      src="/assets/house.svg" 
                     />
                   </div>
                 </div>
@@ -53,21 +53,21 @@ export default function InfoPage() {
                     <img 
                       alt="man 3" 
                       className="absolute inset-0 w-full h-full object-cover object-center" 
-                      src="http://localhost:3845/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" 
+                      src="/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" 
                     />
                   </div>
                   <div className="absolute top-[0.02px] left-[34.61px] w-[58px] h-[58px]">
                     <img 
                       alt="man 1" 
                       className="absolute inset-0 w-full h-full object-cover object-center" 
-                      src="http://localhost:3845/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" 
+                      src="/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" 
                     />
                   </div>
                   <div className="absolute top-[0.02px] left-[69.61px] w-[58px] h-[58px]">
                     <img 
                       alt="man 2" 
                       className="absolute inset-0 w-full h-full object-cover object-center" 
-                      src="http://localhost:3845/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" 
+                      src="/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" 
                     />
                   </div>
                 </div>
@@ -91,7 +91,7 @@ export default function InfoPage() {
                       <img 
                         alt="man (2) 1" 
                         className="absolute inset-0 w-full h-full object-cover object-center" 
-                        src="http://localhost:3845/assets/8518a8fe65a2e7beedb844a206042ab586e2fc05.png" 
+                        src="/assets/8518a8fe65a2e7beedb844a206042ab586e2fc05.png" 
                       />
                     </div>
                   </div>
@@ -100,7 +100,7 @@ export default function InfoPage() {
                   <img 
                     alt="" 
                     className="block w-full h-full" 
-                    src="http://localhost:3845/assets/09f01a3d3a3014f6124c040de9397d511a27f10a.svg" 
+                    src="/assets/09f01a3d3a3014f6124c040de9397d511a27f10a.svg" 
                   />
                 </div>
                 <div className="absolute top-[30.97px] left-[63.62px] w-[64.377px] h-[43.645px]">

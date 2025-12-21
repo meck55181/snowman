@@ -254,7 +254,7 @@ export default function Home() {
                           <img alt="" className="block w-full h-full" src="/assets/10f6f129c67e5cdbc9e02af1dd96f1719624de84.svg" />
                         </div>
                         <div className="absolute top-[4.23px] left-0 w-[121.549px] h-[44.376px]">
-                          <img alt="" className="block w-full h-full" src="/assets/c4a5f30a21a93bc14e229b54b0feb54c9778e529.svg" />
+                          <img alt="" className="block w-full h-full" src="/assets/house.svg" />
                         </div>
                       </div>
                       <p className="text-[16.905px] font-semibold text-black text-center">(집이면 어때)</p>

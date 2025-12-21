@@ -62,7 +62,9 @@ export default function BoardPage() {
         return;
       }
       const json = await res.json();
-      setResponses(json.responses ?? []);
+      const data = json.responses ?? [];
+      console.log("Loaded responses:", data.length);
+      setResponses(data);
       setLoading(false);
     };
 
@@ -105,6 +107,7 @@ export default function BoardPage() {
       }
     }
 
+    console.log("Computed nodes:", nodes.length, "edges:", edges.length);
     return { nodes, edges, outgoingCounts };
   }, [responses]);
 
@@ -153,6 +156,8 @@ export default function BoardPage() {
               viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
               className="h-full w-full"
               preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlnsXlink="http://www.w3.org/1999/xlink"
             >
               {/* 연결선 */}
               <g stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1">
@@ -178,8 +183,19 @@ export default function BoardPage() {
 
               {/* 노드들 */}
               <g>
+                {nodes.length === 0 && (
+                  <text
+                    x={VIEW_WIDTH / 2}
+                    y={VIEW_HEIGHT / 2}
+                    textAnchor="middle"
+                    className="text-[16px] fill-white"
+                  >
+                    데이터가 없습니다
+                  </text>
+                )}
                 {nodes.map((node) => {
                   const count = outgoingCounts.get(node.id) ?? 0;
+                  const asteriskSrc = getAsteriskSrc(count);
                   return (
                     <g
                       key={node.id}
@@ -189,12 +205,19 @@ export default function BoardPage() {
                     >
                       {/* Asterisk 아이콘 */}
                       <image
-                        href={getAsteriskSrc(count)}
+                        href={asteriskSrc}
                         x={-11}
                         y={-19}
                         width={22}
                         height={count >= 5 ? 19 : 22}
                         className="opacity-100"
+                        style={{ imageRendering: "auto" }}
+                        onError={(e) => {
+                          console.error("Image failed to load:", asteriskSrc, "for node:", node.name);
+                        }}
+                        onLoad={() => {
+                          console.log("Image loaded:", asteriskSrc);
+                        }}
                       />
                       {/* 이름 */}
                       <text
@@ -202,8 +225,9 @@ export default function BoardPage() {
                         y={16}
                         textAnchor="middle"
                         className="text-[12px] fill-white pointer-events-none font-normal"
+                        style={{ fill: "white" }}
                       >
-                        {node.name}
+                        {node.name || "이름 없음"}
                       </text>
                     </g>
                   );
