@@ -27,9 +27,9 @@ const VIEW_WIDTH = 1000;
 const VIEW_HEIGHT = 700;
 
 // Asterisk 아이콘 경로 (추천인 수에 따라)
-const ASTERISK_1_SRC = "/asterisk-regular.svg"; // 0명
-const ASTERISK_2_SRC = "/asterisk-bold.svg"; // 2명 이상
-const ASTERISK_3_SRC = "/asterisk-bold.svg"; // 5명 이상 (임시로 bold 사용, 나중에 별도 파일로 교체 가능)
+const ASTERISK_1_SRC = "/assets/asterisk_1.svg"; // 0명
+const ASTERISK_2_SRC = "/assets/asterisk_2.svg"; // 2명 이상
+const ASTERISK_3_SRC = "/assets/asterisk_3.svg"; // 5명 이상
 
 function lcg(seed: number) {
   let value = seed;
@@ -129,10 +129,10 @@ export default function BoardPage() {
               <img 
                 alt="로고" 
                 className="block w-full h-full" 
-                src="/assets/b0d2c79f53b836588667a1c43cb5cf37d3c5563b.svg" 
+                src="/assets/모두의결산_로고.svg" 
               />
             </div>
-            <p className="text-[26.245px] text-white font-semibold">
+            <p className="text-[26.245px] text-white font-semibold font-mono">
               ⠑⠥⠊⠍⠺⠨⠻⠇⠒
             </p>
           </div>
