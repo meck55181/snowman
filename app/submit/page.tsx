@@ -9,11 +9,11 @@ export default function SubmitPage({ searchParams }: SubmitPageProps) {
   const refFromQuery = (searchParams?.ref ?? "").toLowerCase();
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-2xl flex-col gap-8 px-6 py-12">
+    <div className="fixed inset-0 bg-[#eee] overflow-y-auto">
       <Suspense fallback={<div>Loading...</div>}>
         <SubmitForm initialRef={refFromQuery} />
       </Suspense>
-    </main>
+    </div>
   );
 }
 

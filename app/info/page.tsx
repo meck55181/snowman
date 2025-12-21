@@ -5,11 +5,16 @@ export default function InfoPage() {
         {/* 메인 컨텐츠 */}
         <div className="flex flex-col items-center gap-[84px] w-full">
           {/* 상단 로고 */}
-          <div className="h-[188.947px] w-[350.999px] relative">
+          <div className="flex items-end gap-[10px]">
             <img 
-              alt="연말 결산 로고" 
-              className="block w-full h-full object-contain" 
-              src="/assets/4b737a59b34927c932bd0bcc16fbcd62978292b6.svg" 
+              alt="tree" 
+              className="block h-auto object-contain" 
+              src="/assets/tree.svg" 
+            />
+            <img 
+              alt="연말정산 로고" 
+              className="block h-auto object-contain" 
+              src="/assets/연말정산_로고세로.svg" 
             />
           </div>
 
