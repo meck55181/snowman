@@ -163,7 +163,8 @@ export async function POST(request: Request) {
       .eq("insta", insta);
     error = updateError;
   } else {
-    // Insert new record
+    // Insert new record with random pos_seed for node positioning
+    const posSeed = Math.floor(Math.random() * 2147483647); // Random integer for positioning
     const { error: insertError } = await supabase.from("responses").insert({
       name,
       insta,
@@ -174,7 +175,8 @@ export async function POST(request: Request) {
       city,
       city_message: cityMessage,
       ending_song: endingSong || null,
-      final_message: finalMessage
+      final_message: finalMessage,
+      pos_seed: posSeed
     });
     error = insertError;
   }

@@ -70,7 +70,10 @@ export default function BoardPage() {
       }
       const json = await res.json();
       const data = json.responses ?? [];
-      console.log("Loaded responses:", data.length);
+      console.log("Loaded responses:", data.length, data);
+      if (data.length > 0) {
+        console.log("First response sample:", data[0]);
+      }
       setResponses(data);
       setLoading(false);
     };
@@ -138,6 +141,9 @@ export default function BoardPage() {
     }
 
     console.log("Computed nodes:", nodes.length, "edges:", edges.length);
+    if (nodes.length > 0) {
+      console.log("First node sample:", nodes[0]);
+    }
     return { nodes, edges, outgoingCounts };
   }, [responses]);
 
