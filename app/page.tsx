@@ -114,17 +114,17 @@ export default function Home() {
   }), [scrollDownOpacity]);
 
   return (
-    <div className="min-h-[200vh] bg-black relative overflow-x-hidden">
-      {/* 상단 왼쪽 로고 */}
-      <div className="fixed left-[72px] top-[64px] flex flex-col gap-[5.753px] items-center w-[146.149px] z-30">
-        <div className="h-[38.801px] w-[136.471px] relative">
+    <div className="min-h-[200vh] bg-black relative overflow-x-hidden p-16">
+      {/* 상단 왼쪽 로고 (축소 버전) */}
+      <div className="fixed left-[40px] top-[40px] flex flex-col gap-[4px] items-center w-[110px] z-30 pointer-events-none">
+        <div className="h-[28px] w-[100px] relative">
           <img 
             alt="연말정산 로고" 
             className="block w-full h-full" 
             src="/assets/main_연말정산_로고.svg" 
           />
         </div>
-        <p className="text-[28.763px] text-white font-normal" style={{ fontFamily: FONT_FAMILY }}>
+        <p className="text-[20px] text-white font-normal" style={{ fontFamily: FONT_FAMILY }}>
           ⠡⠑⠂⠈⠳⠇⠒
         </p>
       </div>
@@ -136,7 +136,7 @@ export default function Home() {
           className="fixed top-1/2 left-1/2 w-[612px] h-[792px] pointer-events-auto"
           style={linkerPageStyle}
         >
-          <div className="bg-[#eee] border border-black h-full w-full overflow-hidden relative flex items-center justify-center">
+          <div className="bg-[#eee] border-2 border-black h-full w-full overflow-hidden relative flex items-center justify-center">
             <div className="relative w-[479.094px] flex flex-col items-center gap-7">
               {/* LinkerPage 전체 내용 */}
               <div className="h-[87px] w-[161.616px] relative">
@@ -257,7 +257,7 @@ export default function Home() {
           className="fixed top-1/2 left-1/2 w-[612px] h-[792px]"
           style={posterPageStyle}
         >
-          <div className="bg-[#95acac] border border-black h-full w-full overflow-hidden relative flex items-center justify-center">
+          <div className="bg-[#95acac] border-0 border-black h-full w-full overflow-hidden relative flex items-center justify-center">
             <div className="relative w-[430px] flex flex-col items-center gap-[80px]">
               <div className="flex flex-col items-center gap-[84px] w-full">
                 <div className="flex items-end gap-[9.209px]">

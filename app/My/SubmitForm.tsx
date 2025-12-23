@@ -84,31 +84,31 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
   };
 
   return (
-    <div className="bg-[#eee] relative min-h-screen w-full">
-      {/* 왼쪽 상단 로고 - 반응형 */}
-      <div className="absolute left-4 top-16 sm:left-[72px] sm:top-[92px] flex flex-col gap-[13.973px] items-center w-[100px] sm:w-[142px] z-10">
-        <div className="h-[26px] w-[94px] sm:h-[36.977px] sm:w-[132.525px] relative">
+    <div className="bg-[#eee] relative min-h-screen w-full p-16">
+      {/* 이전으로 링크 - 반응형 */}
+      <Link
+        href="/"
+        className="absolute left-16 top-4 sm:left-16 sm:top-[40px] text-[14px] sm:text-[16px] text-black font-normal hover:opacity-70 transition-opacity z-10"
+      >
+        ← 이전으로
+      </Link>
+
+      {/* 왼쪽 상단 로고 - 반응형 (축소 버전) */}
+      <div className="absolute left-16 top-[48px] sm:left-16 sm:top-[72px] flex flex-col gap-[8px] items-center w-[80px] sm:w-[110px] z-10 pointer-events-none">
+        <div className="h-[20px] w-[72px] sm:h-[26px] sm:w-[94px] relative">
           <img 
             alt="나의결산 로고" 
             className="block w-full h-full" 
             src="/assets/나의결산_로고.svg" 
           />
         </div>
-        <p className="text-[20px] sm:text-[27.947px] text-black font-normal" style={{ fontFamily: "'Pretendard', 'Noto Sans Symbols 2', sans-serif" }}>
+        <p className="text-[16px] sm:text-[20px] text-black font-normal" style={{ fontFamily: "'Pretendard', 'Noto Sans Symbols 2', sans-serif" }}>
           ⠉⠣⠺⠈⠳⠇⠒
         </p>
       </div>
 
-      {/* 이전으로 링크 - 반응형 */}
-      <Link
-        href="/"
-        className="absolute left-4 top-8 sm:left-[72px] sm:top-[40px] text-[14px] sm:text-[16px] text-black font-normal hover:opacity-70 transition-opacity z-10"
-      >
-        ← 이전으로
-      </Link>
-
       {/* 메인 폼 카드 - 반응형 */}
-      <div className="absolute left-1/2 top-16 sm:top-[64px] -translate-x-1/2 bg-white border border-black flex flex-col gap-6 sm:gap-[36px] p-4 sm:p-[40px] w-[calc(100%-32px)] sm:w-[596px] max-w-[596px] min-h-[800px] sm:min-h-[1271px]">
+      <div className="absolute left-1/2 top-[120px] sm:top-[140px] -translate-x-1/2 bg-white border border-black flex flex-col gap-6 sm:gap-[36px] p-4 sm:p-[40px] w-[calc(100%-128px)] sm:w-[596px] max-w-[596px] min-h-[800px] sm:min-h-[1271px]">
         <div className="flex flex-col gap-6 sm:gap-[36px] items-start w-full">
           {/* 제목 섹션 - 반응형 */}
           <div className="flex flex-col gap-3 sm:gap-[12px] items-start w-full sm:w-[391px]">

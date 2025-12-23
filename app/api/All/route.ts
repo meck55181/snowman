@@ -1,9 +1,28 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 
 // Force dynamic rendering - API routes should not be statically generated
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+
+// 서버 사이드에서 서비스 역할 키 사용 (RLS 우회)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.error("Missing Supabase environment variables!");
+}
+
+const supabase = createClient(
+  supabaseUrl || '',
+  supabaseServiceKey || '',
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+);
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -33,24 +52,31 @@ export async function GET(request: Request) {
   if (!Number.isFinite(limit) || limit <= 0) limit = 500;
   if (limit > 500) limit = 500;
 
-  const { data, error } = await supabase
+  // RLS 정책 문제를 피하기 위해 모든 데이터 조회 시도
+  const { data, error, count } = await supabase
     .from("responses")
-    .select("id, name, insta, recommender_insta, word, story, memory, city, city_message, ending_song, final_message, created_at, pos_seed")
+    .select("id, name, insta, recommender_insta, word, story, memory, city, city_message, ending_song, final_message, created_at, pos_seed", { count: 'exact' })
     .order("created_at", { ascending: false })
     .limit(limit);
 
   if (error) {
     console.error("Supabase error:", error);
+    console.error("Error code:", error.code);
+    console.error("Error message:", error.message);
+    console.error("Error details:", error.details);
     return NextResponse.json(
       { ok: false, error: `Failed to load board: ${error.message}` },
       { status: 500 }
     );
   }
 
+  console.log(`API: Total count in DB: ${count ?? 'unknown'}`);
   console.log(`API: Returning ${data?.length ?? 0} responses`);
   if (data && data.length > 0) {
     console.log("API: Response IDs:", data.map(r => r.id));
     console.log("API: Response names:", data.map(r => r.name));
+  } else {
+    console.warn("API: No data returned from Supabase!");
   }
 
   return NextResponse.json({ ok: true, responses: data ?? [] });
