@@ -239,7 +239,7 @@ export default function BoardPage() {
                       className="cursor-pointer"
                       onClick={() => loadNodeData(node.id)}
                     >
-                      {/* Asterisk 아이콘 */}
+                      {/* Asterisk 노드 */}
                       <image
                         href={asteriskSrc}
                         x={-11}
@@ -251,20 +251,7 @@ export default function BoardPage() {
                         onError={(e) => {
                           console.error("Image failed to load:", asteriskSrc, "for node:", node.name);
                         }}
-                        onLoad={() => {
-                          console.log("Image loaded:", asteriskSrc);
-                        }}
                       />
-                      {/* 이름 */}
-                      <text
-                        x={0}
-                        y={16}
-                        textAnchor="middle"
-                        className="text-[12px] fill-white pointer-events-none font-normal"
-                        style={{ fill: "white" }}
-                      >
-                        {node.name || "이름 없음"}
-                      </text>
                     </g>
                   );
                 })}
@@ -350,82 +337,73 @@ export default function BoardPage() {
 
               {/* 메인 컨텐츠 */}
               {!selectedLoading && (
-              <div className="flex flex-col gap-[8px] items-end pt-[96px] pb-[32px] px-[55px]">
-                <div className="flex flex-col gap-[24px] items-start w-full">
-                  {/* Q1: 올해의 나를 대표하는 낱말은? */}
-                  <div className="flex flex-col gap-[8px] items-start w-full">
-                    <div className="flex gap-[8px] items-center w-full">
-                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[52px]">
-                        <p className="text-[12px] text-black font-medium text-nowrap">1</p>
-                      </div>
-                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[336px]">
-                        <p className="text-[12px] text-black font-medium text-nowrap">올해의 나를 대표하는 낱말은?</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-start w-full">
-                      <div className="bg-white border border-black flex gap-[5.145px] h-[36px] items-center justify-center p-[5.145px] w-full relative">
-                        <p className="text-[12px] text-black font-medium text-nowrap">{selected.word || '낱말 답변'}</p>
-                        <div className="absolute left-[15px] top-[14px] w-[8px] h-[6px]">
-                          <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
-                        </div>
-                      </div>
-                      <div className="bg-white border-x border-b border-black flex h-[72px] items-center justify-center p-[5.145px] w-full">
-                        <p className="text-[12px] text-black font-medium text-nowrap">{selected.story || '낱말 스토리 답변'}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Q2: 올해 가장 기억에 장면 하나는? */}
-                  <div className="flex flex-col gap-[8px] items-start w-full">
-                    <div className="flex gap-[8px] h-[35px] items-center w-full">
-                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[52px]">
-                        <p className="text-[12px] text-black font-medium text-nowrap">2</p>
-                      </div>
-                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[336px]">
-                        <p className="text-[12px] text-black font-medium text-nowrap">올해 가장 기억에 장면 하나는?</p>
-                      </div>
-                    </div>
-                    <div className="bg-white border border-black flex h-[36px] items-center justify-center p-[5.145px] w-full">
-                      <p className="text-[12px] text-black font-medium text-nowrap">{selected.memory || '올해 가장 기억에 장면 답변'}</p>
-                    </div>
-                  </div>
-
-                  {/* Q3: 올해 내가 살았던 도시에게 하고 싶은 말은? */}
-                  <div className="flex flex-col gap-[8px] items-start w-full">
-                    <div className="flex gap-[8px] items-center w-full">
-                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[52px]">
-                        <p className="text-[12px] text-black font-medium text-nowrap">3</p>
-                      </div>
-                      <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-[5.145px] w-[336px]">
-                        <p className="text-[12px] text-black font-medium text-nowrap">올해 내가 살았던 도시에게 하고 싶은 말은?</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-start w-full">
-                      <div className="bg-white border border-black flex gap-[5.145px] h-[36px] items-center justify-center p-[5.145px] w-full relative">
-                        <p className="text-[12px] text-black font-medium text-nowrap">{selected.city || '도시 답변'}</p>
-                        <div className="absolute left-[15px] top-[14px] w-[8px] h-[6px]">
-                          <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
-                        </div>
-                      </div>
-                      <div className="bg-white border-x border-b border-black flex h-[73px] items-center justify-center p-[5.145px] w-full">
-                        <p className="text-[12px] text-black font-medium text-nowrap">{selected.city_message || '도시에게 하고 싶은 말 답변'}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 모두에게 하고 싶은 말 */}
-                  <div className="bg-[#f7e982] border border-black flex h-[41.414px] items-center justify-center p-[5.145px] w-full">
-                    <p className="text-[12px] text-black font-medium text-nowrap">{selected.final_message || '모두에게 하고 싶은 말 답변'}</p>
-                  </div>
+              <div className="flex flex-col gap-[16px] pt-[96px] pb-[32px] px-[55px]">
+                {/* Name */}
+                <div className="flex flex-col gap-[4px]">
+                  <p className="text-[14px] text-black font-semibold">Name</p>
+                  <p className="text-[16px] text-black">{selected.name || '이름 없음'}</p>
                 </div>
 
-                {/* 엔딩송 */}
-                {selected.ending_song && (
-                  <div className="flex gap-[7px] items-center text-[12px] text-black text-nowrap">
-                    <p className="font-medium" style={{ fontFamily: "'Noto Sans Symbols', 'Pretendard', sans-serif" }}>♫ 엔딩송: </p>
-                    <p className="font-medium">{selected.ending_song}</p>
+                {/* My Instagram */}
+                <div className="flex flex-col gap-[4px]">
+                  <p className="text-[14px] text-black font-semibold">My Instagram</p>
+                  <p className="text-[16px] text-black">@{selected.insta || '없음'}</p>
+                </div>
+
+                {/* Recommender Instagram */}
+                <div className="flex flex-col gap-[4px]">
+                  <p className="text-[14px] text-black font-semibold">Recommender Instagram</p>
+                  <p className="text-[16px] text-black">@{selected.recommender_insta || '없음'}</p>
+                </div>
+
+                {/* Created date/time */}
+                <div className="flex flex-col gap-[4px]">
+                  <p className="text-[14px] text-black font-semibold">Created</p>
+                  <p className="text-[16px] text-black">
+                    {selected.created_at 
+                      ? new Date(selected.created_at).toLocaleString('ko-KR', {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })
+                      : '날짜 없음'}
+                  </p>
+                </div>
+
+                {/* Content */}
+                <div className="flex flex-col gap-[4px]">
+                  <p className="text-[14px] text-black font-semibold">Content</p>
+                  <div className="bg-white border border-black p-[12px] min-h-[100px]">
+                    <div className="flex flex-col gap-[12px] text-[14px] text-black whitespace-pre-wrap">
+                      <div>
+                        <p className="font-semibold mb-1">올해의 나를 대표하는 낱말:</p>
+                        <p>{selected.word || '-'}</p>
+                        <p className="mt-2">{selected.story || '-'}</p>
+                      </div>
+                      <div>
+                        <p className="font-semibold mb-1">올해 가장 기억에 남는 장면:</p>
+                        <p>{selected.memory || '-'}</p>
+                      </div>
+                      <div>
+                        <p className="font-semibold mb-1">올해 내가 살았던 도시:</p>
+                        <p>{selected.city || '-'}</p>
+                        <p className="mt-2">{selected.city_message || '-'}</p>
+                      </div>
+                      {selected.ending_song && (
+                        <div>
+                          <p className="font-semibold mb-1">엔딩송:</p>
+                          <p>{selected.ending_song}</p>
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-semibold mb-1">모두에게 하고 싶은 말:</p>
+                        <p>{selected.final_message || '-'}</p>
+                      </div>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
               )}
             </div>
