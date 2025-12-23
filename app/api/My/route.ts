@@ -9,7 +9,13 @@ type Payload = {
   name?: string;
   insta?: string;
   recommenderInsta?: string;
-  content?: string;
+  word?: string;
+  story?: string;
+  memory?: string;
+  city?: string;
+  cityMessage?: string;
+  endingSong?: string;
+  finalMessage?: string;
 };
 
 const HANDLE_REGEX = /^[a-z0-9._]{1,30}$/;
@@ -51,11 +57,17 @@ export async function POST(request: Request) {
   const name = body.name?.trim() ?? "";
   const insta = normalizeHandle(body.insta);
   const recommenderInsta = normalizeHandle(body.recommenderInsta);
-  const content = body.content?.trim() ?? "";
+  const word = body.word?.trim() ?? "";
+  const story = body.story?.trim() ?? "";
+  const memory = body.memory?.trim() ?? "";
+  const city = body.city?.trim() ?? "";
+  const cityMessage = body.cityMessage?.trim() ?? "";
+  const endingSong = body.endingSong?.trim() ?? "";
+  const finalMessage = body.finalMessage?.trim() ?? "";
 
   if (name.length < 1 || name.length > 30) {
     return NextResponse.json(
-      { ok: false, error: "Name must be between 1 and 30 characters." },
+      { ok: false, error: "이름은 1자 이상 30자 이하여야 합니다." },
       { status: 400 }
     );
   }
@@ -65,7 +77,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         error:
-          "My Instagram handle must be 1–30 characters: a–z, 0–9, dot or underscore."
+          "나의 인스타는 1-30자여야 합니다: a-z, 0-9, 점 또는 언더스코어만 사용 가능합니다."
       },
       { status: 400 }
     );
@@ -76,15 +88,50 @@ export async function POST(request: Request) {
       {
         ok: false,
         error:
-          "Recommender Instagram handle must be 1–30 characters: a–z, 0–9, dot or underscore."
+          "추천인 인스타는 1-30자여야 합니다: a-z, 0-9, 점 또는 언더스코어만 사용 가능합니다."
       },
       { status: 400 }
     );
   }
 
-  if (content.length < 1 || content.length > 3000) {
+  if (!word || word.length < 1) {
     return NextResponse.json(
-      { ok: false, error: "Content must be between 1 and 3000 characters." },
+      { ok: false, error: "올해를 대표하는 낱말을 입력해주세요." },
+      { status: 400 }
+    );
+  }
+
+  if (!story || story.length < 1) {
+    return NextResponse.json(
+      { ok: false, error: "낱말에 담긴 이야기를 입력해주세요." },
+      { status: 400 }
+    );
+  }
+
+  if (!memory || memory.length < 1) {
+    return NextResponse.json(
+      { ok: false, error: "올해 가장 기억에 남는 장면을 입력해주세요." },
+      { status: 400 }
+    );
+  }
+
+  if (!city || city.length < 1) {
+    return NextResponse.json(
+      { ok: false, error: "올해 내가 살았던 도시를 입력해주세요." },
+      { status: 400 }
+    );
+  }
+
+  if (!cityMessage || cityMessage.length < 1) {
+    return NextResponse.json(
+      { ok: false, error: "도시에게 하고 싶은 말을 입력해주세요." },
+      { status: 400 }
+    );
+  }
+
+  if (!finalMessage || finalMessage.length < 1) {
+    return NextResponse.json(
+      { ok: false, error: "마지막 메시지를 입력해주세요." },
       { status: 400 }
     );
   }
@@ -104,7 +151,13 @@ export async function POST(request: Request) {
       .update({
         name,
         recommender_insta: recommenderInsta,
-        content,
+        word,
+        story,
+        memory,
+        city,
+        city_message: cityMessage,
+        ending_song: endingSong || null,
+        final_message: finalMessage,
         created_at: new Date().toISOString()
       })
       .eq("insta", insta);
@@ -115,7 +168,13 @@ export async function POST(request: Request) {
       name,
       insta,
       recommender_insta: recommenderInsta,
-      content
+      word,
+      story,
+      memory,
+      city,
+      city_message: cityMessage,
+      ending_song: endingSong || null,
+      final_message: finalMessage
     });
     error = insertError;
   }

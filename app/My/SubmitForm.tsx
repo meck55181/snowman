@@ -62,7 +62,7 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
       finalMessage: trimmedQ5FinalMessage
     };
 
-    const response = await fetch("/api/submit", {
+    const response = await fetch("/api/My", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -84,7 +84,7 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
       return;
     }
 
-    router.push("/board");
+    router.push("/All");
   };
 
   return (

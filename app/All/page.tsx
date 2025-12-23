@@ -8,7 +8,13 @@ type ResponseRow = {
   name: string;
   insta: string;
   recommender_insta: string;
-  content: string;
+  word: string;
+  story: string;
+  memory: string;
+  city: string;
+  city_message: string;
+  ending_song: string | null;
+  final_message: string;
   created_at: string;
   pos_seed: number;
 };
@@ -55,7 +61,7 @@ export default function BoardPage() {
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      const res = await fetch("/api/board?limit=500", { cache: "no-store" });
+      const res = await fetch("/api/All?limit=500", { cache: "no-store" });
       if (!res.ok) {
         setError("Failed to load network. Please refresh.");
         setLoading(false);
@@ -279,17 +285,7 @@ export default function BoardPage() {
       )}
 
       {/* 선택된 노드 상세 정보 모달 */}
-      {selected && (() => {
-        // content를 JSON으로 파싱 시도
-        let contentData: any = {};
-        try {
-          contentData = JSON.parse(selected.content);
-        } catch {
-          // JSON이 아니면 기존 형식으로 처리
-          contentData = { content: selected.content };
-        }
-
-        return (
+      {selected && (
           <div
             className="fixed inset-0 z-20 flex items-center justify-center bg-black/50 px-4"
             onClick={() => setSelected(null)}
@@ -330,13 +326,13 @@ export default function BoardPage() {
                     </div>
                     <div className="flex flex-col items-start w-full">
                       <div className="bg-white border border-black flex gap-[5.145px] h-[36px] items-center justify-center p-[5.145px] w-full relative">
-                        <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q1Word || '낱말 답변'}</p>
+                        <p className="text-[12px] text-black font-medium text-nowrap">{selected.word || '낱말 답변'}</p>
                         <div className="absolute left-[15px] top-[14px] w-[8px] h-[6px]">
                           <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
                         </div>
                       </div>
                       <div className="bg-white border-x border-b border-black flex h-[72px] items-center justify-center p-[5.145px] w-full">
-                        <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q1Story || '낱말 스토리 답변'}</p>
+                        <p className="text-[12px] text-black font-medium text-nowrap">{selected.story || '낱말 스토리 답변'}</p>
                       </div>
                     </div>
                   </div>
@@ -352,7 +348,7 @@ export default function BoardPage() {
                       </div>
                     </div>
                     <div className="bg-white border border-black flex h-[36px] items-center justify-center p-[5.145px] w-full">
-                      <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q2Memory || '올해 가장 기억에 장면 답변'}</p>
+                      <p className="text-[12px] text-black font-medium text-nowrap">{selected.memory || '올해 가장 기억에 장면 답변'}</p>
                     </div>
                   </div>
 
@@ -368,33 +364,34 @@ export default function BoardPage() {
                     </div>
                     <div className="flex flex-col items-start w-full">
                       <div className="bg-white border border-black flex gap-[5.145px] h-[36px] items-center justify-center p-[5.145px] w-full relative">
-                        <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q3City || '도시 답변'}</p>
+                        <p className="text-[12px] text-black font-medium text-nowrap">{selected.city || '도시 답변'}</p>
                         <div className="absolute left-[15px] top-[14px] w-[8px] h-[6px]">
                           <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
                         </div>
                       </div>
                       <div className="bg-white border-x border-b border-black flex h-[73px] items-center justify-center p-[5.145px] w-full">
-                        <p className="text-[12px] text-black font-medium text-nowrap">{contentData.q3Message || '도시에게 하고 싶은 말 답변'}</p>
+                        <p className="text-[12px] text-black font-medium text-nowrap">{selected.city_message || '도시에게 하고 싶은 말 답변'}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* 모두에게 하고 싶은 말 */}
                   <div className="bg-[#f7e982] border border-black flex h-[41.414px] items-center justify-center p-[5.145px] w-full">
-                    <p className="text-[12px] text-black font-medium text-nowrap">{contentData.finalMessage || '모두에게 하고 싶은 말 답변'}</p>
+                    <p className="text-[12px] text-black font-medium text-nowrap">{selected.final_message || '모두에게 하고 싶은 말 답변'}</p>
                   </div>
                 </div>
 
                 {/* 엔딩송 */}
-                <div className="flex gap-[7px] items-center text-[12px] text-black text-nowrap">
-                  <p className="font-medium" style={{ fontFamily: "'Noto Sans Symbols', 'Pretendard', sans-serif" }}>♫ 엔딩송: </p>
-                  <p className="font-medium">good goodbye - 화사</p>
-                </div>
+                {selected.ending_song && (
+                  <div className="flex gap-[7px] items-center text-[12px] text-black text-nowrap">
+                    <p className="font-medium" style={{ fontFamily: "'Noto Sans Symbols', 'Pretendard', sans-serif" }}>♫ 엔딩송: </p>
+                    <p className="font-medium">{selected.ending_song}</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        );
-      })()}
+      )}
     </main>
   );
 }
