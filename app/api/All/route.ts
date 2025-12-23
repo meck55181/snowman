@@ -47,5 +47,11 @@ export async function GET(request: Request) {
     );
   }
 
+  console.log(`API: Returning ${data?.length ?? 0} responses`);
+  if (data && data.length > 0) {
+    console.log("API: Response IDs:", data.map(r => r.id));
+    console.log("API: Response names:", data.map(r => r.name));
+  }
+
   return NextResponse.json({ ok: true, responses: data ?? [] });
 }

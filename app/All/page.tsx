@@ -150,12 +150,15 @@ export default function BoardPage() {
 
   const { nodes, edges, outgoingCounts } = useMemo(() => {
     console.log("Computing nodes from responses:", responses.length);
+    console.log("Response IDs:", responses.map(r => r?.id));
+    console.log("Response names:", responses.map(r => r?.name));
+    
     const nodes: PositionedNode[] = [];
     const byInsta = new Map<string, PositionedNode>();
 
     for (const row of responses) {
       if (!row || !row.id) {
-        console.warn("Invalid row:", row);
+        console.warn("Invalid row skipped:", row);
         continue;
       }
       const seed = row.pos_seed ?? 1;
@@ -166,6 +169,10 @@ export default function BoardPage() {
       nodes.push(node);
       byInsta.set(row.insta, node);
     }
+    
+    console.log("Created nodes:", nodes.length);
+    console.log("Node IDs:", nodes.map(n => n.id));
+    console.log("Node names:", nodes.map(n => n.name));
 
     // 엣지 생성: 추천인 → 작성자 체인 연결
     const edges: Edge[] = [];
