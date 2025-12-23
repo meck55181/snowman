@@ -56,7 +56,8 @@ export default function BoardPage() {
   const [responses, setResponses] = useState<ResponseRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selected, setSelected] = useState<PositionedNode | null>(null);
+  const [selected, setSelected] = useState<ResponseRow | null>(null);
+  const [selectedLoading, setSelectedLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -86,6 +87,29 @@ export default function BoardPage() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  // 개별 노드 데이터 로드
+  const loadNodeData = async (nodeId: string) => {
+    setSelectedLoading(true);
+    try {
+      const res = await fetch(`/api/All?id=${nodeId}`, { cache: "no-store" });
+      if (!res.ok) {
+        setError("Failed to load node data. Please try again.");
+        setSelectedLoading(false);
+        return;
+      }
+      const json = await res.json();
+      if (json.ok && json.response) {
+        setSelected(json.response);
+      } else {
+        setError("Node data not found.");
+      }
+    } catch (err) {
+      setError("Failed to load node data. Please try again.");
+    } finally {
+      setSelectedLoading(false);
+    }
+  };
 
   const { nodes, edges, outgoingCounts } = useMemo(() => {
     const nodes: PositionedNode[] = [];
@@ -207,7 +231,7 @@ export default function BoardPage() {
                       key={node.id}
                       transform={`translate(${node.x}, ${node.y})`}
                       className="cursor-pointer"
-                      onClick={() => setSelected(node)}
+                      onClick={() => loadNodeData(node.id)}
                     >
                       {/* Asterisk 아이콘 */}
                       <image
@@ -311,7 +335,15 @@ export default function BoardPage() {
                 </div>
               </button>
 
+              {/* 로딩 상태 */}
+              {selectedLoading && (
+                <div className="flex items-center justify-center pt-[96px] pb-[32px] px-[55px]">
+                  <p className="text-black">Loading...</p>
+                </div>
+              )}
+
               {/* 메인 컨텐츠 */}
+              {!selectedLoading && (
               <div className="flex flex-col gap-[8px] items-end pt-[96px] pb-[32px] px-[55px]">
                 <div className="flex flex-col gap-[24px] items-start w-full">
                   {/* Q1: 올해의 나를 대표하는 낱말은? */}
@@ -389,6 +421,7 @@ export default function BoardPage() {
                   </div>
                 )}
               </div>
+              )}
             </div>
           </div>
       )}
