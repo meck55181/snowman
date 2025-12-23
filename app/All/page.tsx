@@ -46,10 +46,10 @@ function lcg(seed: number) {
 }
 
 function getAsteriskSrc(count: number): string {
-  // 0명: asterisk_1, 2명 이상: asterisk_2, 5명 이상: asterisk_3
+  // 1명 이상: asterisk_1, 3명 이상: asterisk_2, 5명 이상: asterisk_3
   if (count >= 5) return ASTERISK_3_SRC;
-  if (count >= 2) return ASTERISK_2_SRC;
-  return ASTERISK_1_SRC; // 0명 또는 1명
+  if (count >= 3) return ASTERISK_2_SRC;
+  return ASTERISK_1_SRC; // 0명 또는 1-2명
 }
 
 export default function BoardPage() {
@@ -163,12 +163,12 @@ export default function BoardPage() {
       {!loading && !error && (
         <>
           {/* 상단 왼쪽 돌아가기 링크 */}
-          <div className="absolute left-4 top-4 sm:left-8 sm:top-8 z-20 pointer-events-auto">
+          <div className="absolute left-[72px] top-[40px] z-20 pointer-events-auto">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm text-white hover:text-slate-300 transition-colors"
+              className="text-[16px] text-white hover:text-slate-300 transition-colors"
             >
-              <span>←</span> 돌아가기
+              ← 이전으로
             </Link>
           </div>
 
@@ -187,13 +187,14 @@ export default function BoardPage() {
           </div>
 
           {/* 네트워크 그래프 */}
-          <div className="relative h-full w-full">
+          <div className="relative h-full w-full overflow-hidden">
             <svg
               viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
               className="h-full w-full"
               preserveAspectRatio="xMidYMid meet"
               xmlns="http://www.w3.org/2000/svg"
               xmlnsXlink="http://www.w3.org/1999/xlink"
+              style={{ width: '100%', height: '100%' }}
             >
               {/* 연결선 */}
               <g stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1">
@@ -232,6 +233,24 @@ export default function BoardPage() {
                 {nodes.map((node) => {
                   const count = outgoingCounts.get(node.id) ?? 0;
                   const asteriskSrc = getAsteriskSrc(count);
+                  // 이미지 크기 결정
+                  let imgWidth = 22;
+                  let imgHeight = 22;
+                  let imgX = -11;
+                  let imgY = -19;
+                  
+                  if (count >= 5) {
+                    imgWidth = 18;
+                    imgHeight = 19;
+                    imgX = -9;
+                    imgY = -19;
+                  } else if (count >= 2) {
+                    imgWidth = 18.057;
+                    imgHeight = 20.576;
+                    imgX = -9.0285;
+                    imgY = -20.576;
+                  }
+                  
                   return (
                     <g
                       key={node.id}
@@ -242,16 +261,27 @@ export default function BoardPage() {
                       {/* Asterisk 노드 */}
                       <image
                         href={asteriskSrc}
-                        x={-11}
-                        y={-19}
-                        width={22}
-                        height={count >= 5 ? 19 : 22}
+                        x={imgX}
+                        y={imgY}
+                        width={imgWidth}
+                        height={imgHeight}
                         className="opacity-100"
                         style={{ imageRendering: "auto" }}
                         onError={(e) => {
                           console.error("Image failed to load:", asteriskSrc, "for node:", node.name);
                         }}
                       />
+                      {/* 이름 텍스트 */}
+                      <text
+                        x={0}
+                        y={8}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        className="text-[12px] fill-white pointer-events-none font-normal"
+                        style={{ fill: "white", fontFamily: "'Pretendard', sans-serif" }}
+                      >
+                        {node.name || "이름 없음"}
+                      </text>
                     </g>
                   );
                 })}
@@ -269,8 +299,8 @@ export default function BoardPage() {
                   src={ASTERISK_1_SRC} 
                 />
               </div>
-              <p className="text-[12px] text-white text-center w-full font-normal">
-                ≥0
+              <p className="text-[12px] text-white text-center w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
+                ≥1
               </p>
             </div>
             <div className="flex flex-col gap-[8px] items-start w-[19.395px]">
@@ -281,8 +311,8 @@ export default function BoardPage() {
                   src={ASTERISK_2_SRC} 
                 />
               </div>
-              <p className="text-[12px] text-white w-full font-normal">
-                ≥2
+              <p className="text-[12px] text-white w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
+                ≥3
               </p>
             </div>
             <div className="flex flex-col gap-[8px] items-start w-[18px]">
@@ -293,7 +323,7 @@ export default function BoardPage() {
                   src={ASTERISK_3_SRC} 
                 />
               </div>
-              <p className="text-[12px] text-white w-full font-normal">
+              <p className="text-[12px] text-white w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
                 ≥5
               </p>
             </div>
