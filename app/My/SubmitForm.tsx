@@ -79,7 +79,12 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
       return;
     }
 
+    // All 페이지로 이동하고 강제 새로고침하여 최신 데이터 표시
     router.push("/All");
+    // 약간의 지연 후 페이지 새로고침 (라우터 이동 후)
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   return (

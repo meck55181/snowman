@@ -59,39 +59,49 @@ export default function BoardPage() {
   const [selected, setSelected] = useState<ResponseRow | null>(null);
   const [selectedLoading, setSelectedLoading] = useState(false);
 
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const res = await fetch("/api/All?limit=500", { cache: "no-store" });
-        if (!res.ok) {
-          const errorText = await res.text();
-          console.error("API error:", res.status, errorText);
-          setError(`Failed to load network (${res.status}). Please refresh.`);
-          setLoading(false);
-          return;
-        }
-        const json = await res.json();
-        console.log("API response:", json);
-        const data = json.responses ?? [];
-        console.log("Loaded responses:", data.length);
-        if (data.length > 0) {
-          console.log("First response sample:", data[0]);
-          console.log("Response fields:", Object.keys(data[0]));
-        } else {
-          console.warn("No responses found in API response");
-        }
-        setResponses(data);
-      } catch (err) {
-        console.error("Failed to load data:", err);
-        setError("Failed to load network. Please refresh.");
-      } finally {
+  const loadData = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/All?limit=500&t=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("API error:", res.status, errorText);
+        setError(`Failed to load network (${res.status}). Please refresh.`);
         setLoading(false);
+        return;
       }
+      const json = await res.json();
+      console.log("API response:", json);
+      const data = json.responses ?? [];
+      console.log("Loaded responses:", data.length);
+      if (data.length > 0) {
+        console.log("First response sample:", data[0]);
+        console.log("Response fields:", Object.keys(data[0]));
+      } else {
+        console.warn("No responses found in API response");
+      }
+      setResponses(data);
+    } catch (err) {
+      console.error("Failed to load data:", err);
+      setError("Failed to load network. Please refresh.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  // 페이지가 포커스될 때 데이터 다시 로드 (새 데이터 반영)
+  useEffect(() => {
+    const handleFocus = () => {
+      loadData();
     };
 
-    load();
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
   }, []);
 
   useEffect(() => {
@@ -146,13 +156,19 @@ export default function BoardPage() {
       byInsta.set(row.insta, node);
     }
 
+    // 엣지 생성: 추천인 → 작성자 체인 연결
     const edges: Edge[] = [];
     const outgoingCounts = new Map<string, number>();
 
     for (const node of nodes) {
+      // 추천인 노드 찾기 (recommender_insta로 검색)
       const from = byInsta.get(node.recommender_insta);
+      
+      // 추천인 노드가 존재하는 경우에만 엣지 생성
+      // MVP: 추천인 핸들이 데이터에 있지만 submission 노드가 없는 경우 무시
       if (from) {
         edges.push({ from, to: node });
+        // 추천인 노드의 추천 횟수 증가 (asterisk 아이콘 선택에 사용)
         const prev = outgoingCounts.get(from.id) ?? 0;
         outgoingCounts.set(from.id, prev + 1);
       }
