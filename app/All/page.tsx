@@ -62,20 +62,33 @@ export default function BoardPage() {
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      const res = await fetch("/api/All?limit=500", { cache: "no-store" });
-      if (!res.ok) {
+      setError("");
+      try {
+        const res = await fetch("/api/All?limit=500", { cache: "no-store" });
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error("API error:", res.status, errorText);
+          setError(`Failed to load network (${res.status}). Please refresh.`);
+          setLoading(false);
+          return;
+        }
+        const json = await res.json();
+        console.log("API response:", json);
+        const data = json.responses ?? [];
+        console.log("Loaded responses:", data.length);
+        if (data.length > 0) {
+          console.log("First response sample:", data[0]);
+          console.log("Response fields:", Object.keys(data[0]));
+        } else {
+          console.warn("No responses found in API response");
+        }
+        setResponses(data);
+      } catch (err) {
+        console.error("Failed to load data:", err);
         setError("Failed to load network. Please refresh.");
+      } finally {
         setLoading(false);
-        return;
       }
-      const json = await res.json();
-      const data = json.responses ?? [];
-      console.log("Loaded responses:", data.length, data);
-      if (data.length > 0) {
-        console.log("First response sample:", data[0]);
-      }
-      setResponses(data);
-      setLoading(false);
     };
 
     load();
@@ -115,10 +128,15 @@ export default function BoardPage() {
   };
 
   const { nodes, edges, outgoingCounts } = useMemo(() => {
+    console.log("Computing nodes from responses:", responses.length);
     const nodes: PositionedNode[] = [];
     const byInsta = new Map<string, PositionedNode>();
 
     for (const row of responses) {
+      if (!row || !row.id) {
+        console.warn("Invalid row:", row);
+        continue;
+      }
       const seed = row.pos_seed ?? 1;
       const rand = lcg(seed);
       const x = rand() * VIEW_WIDTH;
@@ -143,6 +161,8 @@ export default function BoardPage() {
     console.log("Computed nodes:", nodes.length, "edges:", edges.length);
     if (nodes.length > 0) {
       console.log("First node sample:", nodes[0]);
+      console.log("Node position:", { x: nodes[0].x, y: nodes[0].y });
+      console.log("Node name:", nodes[0].name);
     }
     return { nodes, edges, outgoingCounts };
   }, [responses]);
@@ -220,17 +240,17 @@ export default function BoardPage() {
 
               {/* 노드들 */}
               <g>
-                {nodes.length === 0 && (
+                {nodes.length === 0 && !loading && (
                   <text
                     x={VIEW_WIDTH / 2}
                     y={VIEW_HEIGHT / 2}
                     textAnchor="middle"
                     className="text-[16px] fill-white"
                   >
-                    데이터가 없습니다
+                    데이터가 없습니다 (노드 수: {nodes.length}, 응답 수: {responses.length})
                   </text>
                 )}
-                {nodes.map((node) => {
+                {nodes.map((node, idx) => {
                   const count = outgoingCounts.get(node.id) ?? 0;
                   const asteriskSrc = getAsteriskSrc(count);
                   // 이미지 크기 결정
@@ -244,11 +264,23 @@ export default function BoardPage() {
                     imgHeight = 19;
                     imgX = -9;
                     imgY = -19;
-                  } else if (count >= 2) {
+                  } else if (count >= 3) {
                     imgWidth = 18.057;
                     imgHeight = 20.576;
                     imgX = -9.0285;
                     imgY = -20.576;
+                  }
+                  
+                  // 첫 번째 노드만 로그 출력
+                  if (idx === 0) {
+                    console.log("Rendering first node:", {
+                      id: node.id,
+                      name: node.name,
+                      x: node.x,
+                      y: node.y,
+                      asteriskSrc,
+                      count
+                    });
                   }
                   
                   return (
@@ -268,7 +300,12 @@ export default function BoardPage() {
                         className="opacity-100"
                         style={{ imageRendering: "auto" }}
                         onError={(e) => {
-                          console.error("Image failed to load:", asteriskSrc, "for node:", node.name);
+                          console.error("Image failed to load:", asteriskSrc, "for node:", node.name, "at", { x: node.x, y: node.y });
+                        }}
+                        onLoad={() => {
+                          if (idx === 0) {
+                            console.log("Image loaded successfully:", asteriskSrc);
+                          }
                         }}
                       />
                       {/* 이름 텍스트 */}
