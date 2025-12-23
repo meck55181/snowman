@@ -11,15 +11,15 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/submit/page": [
+    "/All/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/submit/page.js"
+      "static/chunks/app/All/page.js"
     ],
-    "/board/page": [
+    "/My/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/board/page.js"
+      "static/chunks/app/My/page.js"
     ]
   }
 }
