@@ -710,6 +710,9 @@ video {
 .inline-flex{
   display: inline-flex;
 }
+.hidden{
+  display: none;
+}
 .h-\[100px\]{
   height: 100px;
 }
