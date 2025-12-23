@@ -94,14 +94,25 @@ export default function BoardPage() {
     loadData();
   }, []);
 
-  // 페이지가 포커스될 때 데이터 다시 로드 (새 데이터 반영)
+  // 페이지가 포커스되거나 보일 때 데이터 다시 로드 (새 데이터 반영)
   useEffect(() => {
     const handleFocus = () => {
       loadData();
     };
 
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadData();
+      }
+    };
+
     window.addEventListener("focus", handleFocus);
-    return () => window.removeEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   useEffect(() => {
