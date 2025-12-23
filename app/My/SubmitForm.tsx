@@ -51,17 +51,6 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
       return;
     }
 
-    // 모든 답변을 JSON 형태로 content 필드에 저장
-    const contentData = {
-      q1Word: trimmedQ1Word,
-      q1Story: trimmedQ1Story,
-      q2Memory: trimmedQ2Memory,
-      q3City: trimmedQ3City,
-      q3Message: trimmedQ3Message,
-      q4EndingSong: trimmedQ4EndingSong,
-      finalMessage: trimmedQ5FinalMessage
-    };
-
     const response = await fetch("/api/My", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -69,7 +58,13 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
         name: trimmedName,
         insta: trimmedInsta,
         recommenderInsta: trimmedRecommender,
-        content: JSON.stringify(contentData)
+        word: trimmedQ1Word,
+        story: trimmedQ1Story,
+        memory: trimmedQ2Memory,
+        city: trimmedQ3City,
+        cityMessage: trimmedQ3Message,
+        endingSong: trimmedQ4EndingSong,
+        finalMessage: trimmedQ5FinalMessage
       })
     });
 
