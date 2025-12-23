@@ -40,8 +40,9 @@ export async function GET(request: Request) {
     .limit(limit);
 
   if (error) {
+    console.error("Supabase error:", error);
     return NextResponse.json(
-      { ok: false, error: "Failed to load board" },
+      { ok: false, error: `Failed to load board: ${error.message}` },
       { status: 500 }
     );
   }
