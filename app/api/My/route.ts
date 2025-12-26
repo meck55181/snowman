@@ -145,14 +145,14 @@ export async function POST(request: Request) {
 
   if (!q2Insight || q2Insight.length < 1) {
     return NextResponse.json(
-      { ok: false, error: "올해의 깨달음을 입력해주세요." },
+      { ok: false, error: "올해 나의 삶의 낙을 입력해주세요." },
       { status: 400 }
     );
   }
 
   if (!q2InsightDesc || q2InsightDesc.length < 1) {
     return NextResponse.json(
-      { ok: false, error: "올해의 깨달음에 대한 설명을 입력해주세요." },
+      { ok: false, error: "삶의 낙으로 선택한 이유를 입력해주세요." },
       { status: 400 }
     );
   }

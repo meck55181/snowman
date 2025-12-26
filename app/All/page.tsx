@@ -561,14 +561,14 @@ export default function BoardPage() {
                       </div>
                     </div>
 
-                    {/* 질문 2: 올해의 깨달음은? */}
+                    {/* 질문 2: 올해 나의 삶의 낙은? */}
                     <div className="flex flex-col gap-[6px] sm:gap-[8px] items-start w-full">
                       <div className="flex gap-[6px] sm:gap-[8px] items-center w-full">
                         <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-[40px] sm:w-[52px] shrink-0">
                           <p className="text-[10px] sm:text-[12px] text-black font-medium">2</p>
                         </div>
                         <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 flex-1 min-w-0">
-                          <p className="text-[10px] sm:text-[12px] text-black font-medium truncate">올해의 깨달음은?</p>
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium truncate">올해 나의 삶의 낙은?</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-start w-full">
@@ -578,7 +578,7 @@ export default function BoardPage() {
                           className="bg-white border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
                         >
                           <p className="text-[10px] sm:text-[12px] text-black font-medium text-center truncate px-[20px] sm:px-0">
-                            {selected.q2_insight || selected.memory || '깨달음 답변'}
+                            {selected.q2_insight || selected.memory || '삶의 낙 답변'}
                           </p>
                           <div
                             className={`absolute h-[5px] sm:h-[6px] left-[10px] sm:left-[15px] top-1/2 -translate-y-1/2 w-[7px] sm:w-[8px] transition-transform ${
@@ -591,7 +591,7 @@ export default function BoardPage() {
                         {toggleQ2 && (
                           <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[60px] sm:min-h-[72px] items-center justify-center p-3 sm:p-5 w-full">
                             <p className="text-[10px] sm:text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
-                              {selected.q2_insight_desc || '깨달음 설명 답변'}
+                              {selected.q2_insight_desc || '삶의 낙 설명 답변'}
                             </p>
                           </div>
                         )}

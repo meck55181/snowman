@@ -23,7 +23,7 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
   const [q1Word, setQ1Word] = useState("");
   const [q1WordDesc, setQ1WordDesc] = useState("");
   
-  // Q2: 올해의 깨달음
+  // Q2: 올해 나의 삶의 낙
   const [q2Insight, setQ2Insight] = useState("");
   const [q2InsightDesc, setQ2InsightDesc] = useState("");
   
@@ -224,22 +224,22 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
               />
             </div>
 
-            {/* Q2. 올해의 깨달음은? */}
+            {/* Q2. 올해 나의 삶의 낙은? */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q2. 올해의 깨달음은? *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q2. 올해 나의 삶의 낙은? *</p>
               <input
                 type="text"
                 value={q2Insight}
                 onChange={(e) => setQ2Insight(e.target.value)}
                 className="border border-[#999] flex h-[38px] sm:h-[41px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black"
-                placeholder="깨달음을 입력해주세요"
+                placeholder="삶의 낙을 입력해주세요"
                 required
               />
             </div>
 
-            {/* Q2-1. 올해의 깨달음에 대한 설명을 적어주세요. */}
+            {/* Q2-1. 삶의 낙으로 선택한 이유를 적어주세요. */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q2-1. 올해의 깨달음으로 선정한 이유를 적어주세요. *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q2-1. 삶의 낙으로 선택한 이유를 적어주세요. *</p>
               <textarea
                 value={q2InsightDesc}
                 onChange={(e) => setQ2InsightDesc(e.target.value)}
@@ -264,7 +264,7 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
 
             {/* Q3-1. 올해의 콘텐츠에 대한 설명을 적어주세요. */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q3-1. 올해의 콘텐츠에 대한 설명을 적어주세요. *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q3-1. 올해의 콘텐츠로 선정한 이유를 적어주세요. *</p>
               <textarea
                 value={q3ContentDesc}
                 onChange={(e) => setQ3ContentDesc(e.target.value)}
