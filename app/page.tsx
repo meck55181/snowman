@@ -13,6 +13,8 @@ const SCROLL_THRESHOLD = 300; // 이 값 이상 스크롤하면 PosterPage가 �
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [scale, setScale] = useState(0.85);
+  const [logoHeight, setLogoHeight] = useState(92);
+  const [isMobile, setIsMobile] = useState(false);
 
   // 스크롤 이벤트 핸들러
   useEffect(() => {
@@ -24,16 +26,28 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 화면 크기에 따른 scale 계산
+  // 화면 크기에 따른 scale 계산 및 로고 높이 계산
   useEffect(() => {
     const updateScale = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
       
-      if (width < 900) {
-        setScale(Math.min(width / CARD_WIDTH, height / CARD_HEIGHT, 0.7));
-      } else {
-        setScale(Math.min(width / CARD_WIDTH, height / CARD_HEIGHT, 0.85));
+      // 모바일 여부 확인 (640px 미만)
+      setIsMobile(width < 640);
+      
+      // 로고 높이 계산 (작은 화면: 이미지16px + 텍스트12px + 간격2px + top24px = 54px, 큰 화면: 이미지28px + 텍스트20px + 간격4px + top40px = 92px)
+      setLogoHeight(width < 640 ? 54 : 92);
+      
+      // 모바일에서 padding 12px (좌우 24px, 상하 24px) 고려
+      const padding = width < 640 ? 24 : 0; // sm breakpoint 미만이면 padding 적용
+      const availableWidth = width - padding;
+      const availableHeight = height - padding;
+      
+      if (width < 400) {
+        setScale(Math.min(availableWidth / CARD_WIDTH, availableHeight / CARD_HEIGHT, 0.7));
+      } 
+      else {
+        setScale(Math.min(availableWidth / CARD_WIDTH, availableHeight / CARD_HEIGHT, 0.8));
       }
     };
     
@@ -55,34 +69,42 @@ export default function Home() {
   const scrollDownOpacity = useMemo(() => Math.max(0, 1 - scrollY / 200), [scrollY]);
 
   // 메모이제이션된 스타일 객체들
-  const linkerPageStyle = useMemo(() => ({
-    transform: `translate(-50%, -50%) scale(${scale})`,
-    zIndex: 10,
-  }), [scale]);
+  const linkerPageStyle = useMemo(() => {
+    // 모바일일 때만 로고 영역을 피하기 위해 아래로 이동
+    const logoOffset = isMobile ? logoHeight / 2 : 0;
+    return {
+      transform: `translate(-50%, calc(-50% + ${logoOffset}px)) scale(${scale})`,
+      zIndex: 10,
+    };
+  }, [scale, logoHeight, isMobile]);
 
-  const posterPageStyle = useMemo(() => ({
-    transform: `translate(calc(-50% + 8.12px), calc(-50% - ${posterPageOffset}px + 14.38px)) rotate(8deg) scale(${scale})`,
-    opacity: posterPageOpacity,
-    zIndex: 20,
-    transition: 'transform 0.5s ease-out, opacity 0.5s ease-out',
-  }), [posterPageOffset, posterPageOpacity, scale]);
+  const posterPageStyle = useMemo(() => {
+    // 모바일일 때만 로고 영역을 피하기 위해 아래로 이동
+    const logoOffset = isMobile ? logoHeight / 2 : 0;
+    return {
+      transform: `translate(calc(-50% + 8.12px), calc(-50% + ${logoOffset}px - ${posterPageOffset}px + 14.38px)) rotate(8deg) scale(${scale})`,
+      opacity: posterPageOpacity,
+      zIndex: 20,
+      transition: 'transform 0.5s ease-out, opacity 0.5s ease-out',
+    };
+  }, [posterPageOffset, posterPageOpacity, scale, logoHeight, isMobile]);
 
   const scrollDownStyle = useMemo(() => ({
     opacity: scrollDownOpacity,
   }), [scrollDownOpacity]);
 
   return (
-    <div className="min-h-[200vh] bg-black relative overflow-x-hidden p-16">
+    <div className="min-h-[200vh] bg-black relative overflow-x-hidden p-3 sm:p-16">
       {/* 상단 왼쪽 로고 (축소 버전) */}
-      <div className="fixed left-[40px] top-[40px] flex flex-col gap-[4px] items-center w-[110px] z-30 pointer-events-none">
-        <div className="h-[28px] w-[100px] relative">
+      <div className="fixed left-6 top-6 sm:left-[40px] sm:top-[40px] flex flex-col gap-[2px] sm:gap-[4px] items-center w-[60px] sm:w-[110px] z-30 pointer-events-none">
+        <div className="h-[16px] w-[56px] sm:h-[28px] sm:w-[100px] relative">
           <img 
             alt="연말정산 로고" 
             className="block w-full h-full" 
             src="/assets/main_연말정산_로고.svg" 
           />
         </div>
-        <p className="text-[20px] text-white font-normal" style={{ fontFamily: FONT_FAMILY }}>
+        <p className="text-[12px] sm:text-[20px] text-white font-normal" style={{ fontFamily: FONT_FAMILY }}>
           ⠡⠑⠂⠈⠳⠇⠒
         </p>
       </div>
@@ -335,18 +357,12 @@ export default function Home() {
 
       {/* 하단 "scroll down" 텍스트 - 스크롤하면 사라짐 */}
       <div 
-        className="fixed left-[659px] top-[943px] flex flex-col gap-[5px] items-center z-30"
+        className={`fixed left-1/2 -translate-x-1/2 bottom-[24px] flex flex-col gap-[5px] items-center z-30 ${scrollDownOpacity > 0.5 ? 'animate-blink' : ''}`}
         style={scrollDownStyle}
       >
-        <p className="text-[20px] font-medium text-white">scroll down</p>
-        <div className="w-0 h-[16px] flex items-center justify-center">
-          <div className="rotate-[90deg]">
-            <div className="relative w-[16px] h-full">
-              <div className="absolute inset-[-7.36px_-6.25%_-7.36px_0]">
-                <img alt="화살표" className="block max-w-none w-full h-full" src="/assets/Arrow 9.svg" />
-              </div>
-            </div>
-          </div>
+        <p className="text-[16px] font-medium text-white">scroll down</p>
+        <div className="w-[16px] h-[16px] flex items-center justify-center">
+          <img alt="화살표" className="block max-w-none w-full h-full" src="/assets/arrow_scroll.svg" />
         </div>
       </div>
     </div>

@@ -133,7 +133,7 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
       </div>
 
       {/* 메인 폼 카드 - 반응형 */}
-      <div className="absolute left-1/2 top-[120px] sm:top-[140px] -translate-x-1/2 bg-white border border-black flex flex-col gap-6 sm:gap-[36px] p-4 sm:p-[24px] w-[calc(100%-48px)] sm:w-[596px] max-w-[596px] min-h-[800px] sm:min-h-[1271px]">
+      <div className="absolute left-1/2 top-[120px] sm:top-[160px] -translate-x-1/2 bg-white border border-black flex flex-col gap-6 sm:gap-[36px] p-4 sm:p-[24px] w-[calc(100%-48px)] sm:w-[596px] max-w-[596px] min-h-[800px] sm:min-h-[1271px]">
         <div className="flex flex-col gap-6 sm:gap-[36px] items-start w-full">
           {/* 제목 섹션 - 반응형 */}
           <div className="flex flex-col gap-3 sm:gap-[12px] items-start w-full sm:w-[391px]">
@@ -311,7 +311,7 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
 
             {/* 마지막 메시지 */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q. 마지막으로 이 결산을 들을 사람들에게 남기고 싶은 아무말! *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q. 마지막으로 이 결산을 볼 사람들에게 남기고 싶은 아무 말! *</p>
               <textarea
                 value={finalMessage}
                 onChange={(e) => setFinalMessage(e.target.value)}

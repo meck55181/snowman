@@ -243,7 +243,7 @@ export default function BoardPage() {
   }, [responses]);
 
   return (
-    <main className="relative h-screen w-full overflow-hidden bg-[#181818] p-16">
+    <main className="relative h-screen w-full overflow-hidden bg-[#181818] p-4">
       {loading && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#181818]">
           <p className="text-white">Loading network...</p>
@@ -282,7 +282,7 @@ export default function BoardPage() {
           </div>
 
           {/* 네트워크 그래프 */}
-          <div className="relative h-full w-full overflow-hidden">
+          <div className="relative h-full w-full overflow-hidden pt-[100px] sm:pt-[120px]">
             <svg
               viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
               className="h-full w-full"

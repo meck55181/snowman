@@ -1,6 +1,5 @@
 {
+  "/My/page": "app/My/page.js",
   "/All/page": "app/All/page.js",
-  "/page": "app/page.js",
-  "/api/All/route": "app/api/All/route.js",
-  "/My/page": "app/My/page.js"
+  "/page": "app/page.js"
 }
