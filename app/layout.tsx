@@ -3,7 +3,7 @@ import "./globals.css";
 import ScrollRestoration from "./ScrollRestoration";
 
 export const metadata: Metadata = {
-  title: "Snowman Board",
+  title: "Recap Board",
   description: "Share and browse notes with your community."
 };
 

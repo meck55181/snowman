@@ -25,7 +25,7 @@ git add .
 git commit -m "Initial commit"
 
 # GitHub에서 새 저장소를 생성한 후
-git remote add origin https://github.com/yourusername/snowman.git
+git remote add origin https://github.com/yourusername/recap.git
 git branch -M main
 git push -u origin main
 ```
@@ -57,7 +57,7 @@ git push
 2. **Add New...** → **Project** 클릭
 3. GitHub 저장소 선택 (또는 GitLab/Bitbucket)
 4. 프로젝트 선택:
-   - **Import Git Repository**에서 `snowman` 프로젝트 찾기
+   - **Import Git Repository**에서 `recap` 프로젝트 찾기
    - 또는 저장소 URL 직접 입력
 5. 프로젝트 설정:
    - **Framework Preset**: Next.js (자동 감지됨)
