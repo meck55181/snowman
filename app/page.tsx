@@ -89,7 +89,9 @@ export default function Home() {
     };
   }, [posterPageOffset, posterPageOpacity, scale, logoHeight, isMobile]);
 
-  const scrollDownStyle = { opacity: scrollDownOpacity };
+  const scrollDownStyle = useMemo(() => ({
+    opacity: scrollDownOpacity,
+  }), [scrollDownOpacity]);
 
   return (
     <div className="min-h-[200vh] bg-black relative overflow-x-hidden p-3 sm:p-16">
@@ -115,6 +117,8 @@ export default function Home() {
           style={linkerPageStyle}
         >
           <div className="bg-[#eee] border-2 border-black h-full w-full overflow-hidden relative">
+            {/* LinkerPage 전체 내용 - Figma 디자인에 맞춘 absolute positioning */}
+            
             {/* 로고 */}
             <div className="absolute h-[87px] left-[224.74px] top-[38.5px] w-[161.616px]">
               <img 
@@ -235,15 +239,15 @@ export default function Home() {
             {/* 버튼들 */}
             <div className="absolute flex gap-[29px] items-center left-[66px] top-[608.5px] w-[479.094px]">
               <Link
-                href="/All"
-                className="bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center px-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
+                href={"/All" as any}
+                className="animate-pulse-bg bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center px-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
               >
                 <p className="font-semibold text-center">모두의 결산</p>
                 <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠑⠥⠊⠍⠺⠀⠈⠳⠇⠒</p>
               </Link>
               <Link
-                href="/My"
-                className="bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center p-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
+                href={"/My" as any}
+                className="animate-pulse-bg bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center p-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
               >
                 <p className="font-semibold text-center">나의 결산</p>
                 <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠉⠣⠺⠈⠳⠇⠒</p>
@@ -262,7 +266,7 @@ export default function Home() {
           className="fixed top-1/2 left-1/2 w-[612px] h-[792px]"
           style={posterPageStyle}
         >
-          <div className="bg-[#95acac] h-full w-full overflow-hidden relative flex items-center justify-center">
+          <div className="bg-[#95acac] border-0 border-black h-full w-full overflow-hidden relative flex items-center justify-center">
             <div className="relative w-[430px] flex flex-col items-center gap-[80px]">
               <div className="flex flex-col items-center gap-[84px] w-full">
                 <div className="flex items-end gap-[9.209px]">
@@ -276,6 +280,9 @@ export default function Home() {
                       alt="연말정산 로고" 
                       className="block w-full h-full object-contain" 
                       src="/assets/연말정산_로고세로.svg"
+                      onError={(e) => {
+                        console.error('이미지 로드 실패:', e);
+                      }}
                     />
                   </div>
                 </div>

@@ -9,17 +9,8 @@ export const runtime = 'nodejs';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// 디버깅: 사용 중인 Supabase URL 확인 (도메인만 로그)
-if (supabaseUrl) {
-  const urlObj = new URL(supabaseUrl);
-  console.log(`[API] Using Supabase URL: ${urlObj.hostname}`);
-} else {
-  console.error("[API] Missing NEXT_PUBLIC_SUPABASE_URL!");
-}
-
 if (!supabaseUrl || !supabaseServiceKey) {
-  console.error("[API] Missing Supabase environment variables!");
-  console.error(`[API] URL: ${supabaseUrl ? 'SET' : 'MISSING'}, Key: ${supabaseServiceKey ? 'SET' : 'MISSING'}`);
+  console.error("Missing Supabase environment variables!");
 }
 
 const supabase = createClient(
@@ -53,14 +44,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const response = NextResponse.json({ ok: true, response: data });
-    
-    // 캐시 방지 헤더 추가
-    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    response.headers.set('Pragma', 'no-cache');
-    response.headers.set('Expires', '0');
-    
-    return response;
+    return NextResponse.json({ ok: true, response: data });
   }
 
   // 전체 리스트 조회
@@ -70,30 +54,25 @@ export async function GET(request: Request) {
 
   // RLS 정책 문제를 피하기 위해 모든 데이터 조회 시도
   // 필드명이 없어도 에러가 나지 않도록 * 사용 (모든 필드 선택)
-  console.log(`[API] Querying Supabase for responses (limit: ${limit})`);
   const { data, error, count } = await supabase
     .from("responses")
     .select("*", { count: 'exact' })
     .order("created_at", { ascending: false })
     .limit(limit);
-  
-  console.log(`[API] Supabase query result - count: ${count}, data length: ${data?.length ?? 0}`);
 
   if (error) {
-    console.error("[API] Supabase error:", error);
-    console.error("[API] Error code:", error.code);
-    console.error("[API] Error message:", error.message);
-    console.error("[API] Error details:", error.details);
+    console.error("Supabase error:", error);
+    console.error("Error code:", error.code);
+    console.error("Error message:", error.message);
+    console.error("Error details:", error.details);
     return NextResponse.json(
       { ok: false, error: `Failed to load board: ${error.message}` },
       { status: 500 }
     );
   }
 
-  console.log(`[API] Total count in DB: ${count ?? 'unknown'}`);
-  console.log(`[API] Returning ${data?.length ?? 0} responses`);
-  console.log(`[API] Supabase URL: ${supabaseUrl}`);
-  console.log(`[API] Using service role key: ${!!process.env.SUPABASE_SERVICE_ROLE_KEY}`);
+  console.log(`API: Total count in DB: ${count ?? 'unknown'}`);
+  console.log(`API: Returning ${data?.length ?? 0} responses`);
   if (data && data.length > 0) {
     console.log("API: Response IDs:", data.map(r => r.id));
     console.log("API: Response names:", data.map(r => r.name));
@@ -108,12 +87,5 @@ export async function GET(request: Request) {
     }
   }
 
-  const response = NextResponse.json({ ok: true, responses: data ?? [] });
-  
-  // 캐시 방지 헤더 추가
-  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  response.headers.set('Pragma', 'no-cache');
-  response.headers.set('Expires', '0');
-  
-  return response;
+  return NextResponse.json({ ok: true, responses: data ?? [] });
 }

@@ -239,7 +239,7 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
 
             {/* Q2-1. 올해의 깨달음에 대한 설명을 적어주세요. */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q2-1. 올해의 깨달음에 대한 설명을 적어주세요. *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q2-1. 올해의 깨달음으로 선정한 이유를 적어주세요. *</p>
               <textarea
                 value={q2InsightDesc}
                 onChange={(e) => setQ2InsightDesc(e.target.value)}
@@ -276,7 +276,7 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
 
             {/* Q4. 내년 1월 1일에 들을 노래는? */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q4. 내년 1월 1일에 들을 노래는?</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q4. 내년 1월 1일에 들을 노래는? (노래 제목 - 가수)</p>
               <input
                 type="text"
                 value={q4Song}
