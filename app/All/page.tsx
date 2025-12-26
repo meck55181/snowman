@@ -515,14 +515,14 @@ export default function BoardPage() {
 
               {/* 로딩 상태 */}
               {selectedLoading && (
-                <div className="flex items-center justify-center pt-[60px] sm:pt-[96px] pb-[24px] sm:pb-[32px] px-[16px] sm:px-[55px]">
+                <div className="flex items-center justify-center pt-[60px] sm:pt-[96px] pb-[24px] sm:pb-[32px] px-[40px] sm:px-[64px]">
                   <p className="text-black text-[14px] sm:text-base">Loading...</p>
                 </div>
               )}
 
               {/* 메인 컨텐츠 - Figma 질문 카드 스타일 */}
               {!selectedLoading && (
-                <div className="flex flex-col gap-[8px] items-end pt-[60px] sm:pt-[96px] pb-[24px] sm:pb-[32px] px-[24px] sm:px-[55px] w-full">
+                <div className="flex flex-col gap-[8px] items-end pt-[60px] sm:pt-[96px] pb-[24px] sm:pb-[32px] px-[40px] sm:px-[64px] w-full">
                   <div className="flex flex-col gap-[16px] sm:gap-[24px] items-start w-full sm:w-[396px]">
                     {/* 질문 1: 올해의 낱말은? */}
                     <div className="flex flex-col gap-[6px] sm:gap-[8px] items-start w-full">
