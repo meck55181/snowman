@@ -215,7 +215,28 @@ export async function POST(request: Request) {
     );
   }
 
+  // 저장 성공 후 실제로 저장되었는지 확인
+  const { data: savedData, error: verifyError } = await supabase
+    .from("responses")
+    .select("*")
+    .eq("insta", insta)
+    .single();
+
+  if (verifyError) {
+    console.error("Failed to verify saved data:", verifyError);
+  } else {
+    console.log("Successfully saved/updated data:", {
+      id: savedData?.id,
+      name: savedData?.name,
+      insta: savedData?.insta,
+      created_at: savedData?.created_at
+    });
+  }
+
   ipLastPost.set(ip, now);
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ 
+    ok: true,
+    data: savedData ? { id: savedData.id, insta: savedData.insta } : null
+  });
 }

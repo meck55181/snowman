@@ -44,7 +44,14 @@ export async function GET(request: Request) {
       );
     }
 
-    return NextResponse.json({ ok: true, response: data });
+    const response = NextResponse.json({ ok: true, response: data });
+    
+    // 캐시 방지 헤더 추가
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+    
+    return response;
   }
 
   // 전체 리스트 조회
@@ -87,5 +94,12 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true, responses: data ?? [] });
+  const response = NextResponse.json({ ok: true, responses: data ?? [] });
+  
+  // 캐시 방지 헤더 추가
+  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  response.headers.set('Pragma', 'no-cache');
+  response.headers.set('Expires', '0');
+  
+  return response;
 }

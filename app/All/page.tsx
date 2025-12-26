@@ -86,8 +86,16 @@ export default function BoardPage() {
   const loadData = async () => {
     setLoading(true);
     setError("");
+    const timestamp = Date.now();
     try {
-      const res = await fetch("/api/All?limit=500&t=" + Date.now(), { cache: "no-store" });
+      console.log(`[${new Date().toISOString()}] Loading data with timestamp: ${timestamp}`);
+      const res = await fetch(`/api/All?limit=500&t=${timestamp}`, { 
+        cache: "no-store",
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
       if (!res.ok) {
         const errorText = await res.text();
         console.error("API error:", res.status, errorText);
@@ -96,14 +104,22 @@ export default function BoardPage() {
         return;
       }
       const json = await res.json();
-      console.log("API response:", json);
+      console.log(`[${new Date().toISOString()}] API response:`, {
+        ok: json.ok,
+        count: json.responses?.length ?? 0,
+        responseIds: json.responses?.map((r: any) => r.id) ?? []
+      });
       const data = json.responses ?? [];
-      console.log("Loaded responses:", data.length);
+      console.log(`Loaded ${data.length} responses`);
       if (data.length > 0) {
-        console.log("First response sample:", data[0]);
-        console.log("Response fields:", Object.keys(data[0]));
+        console.log("First response:", {
+          id: data[0].id,
+          name: data[0].name,
+          insta: data[0].insta,
+          created_at: data[0].created_at
+        });
       } else {
-        console.warn("No responses found in API response");
+        console.warn("⚠️ No responses found in API response");
       }
       setResponses(data);
     } catch (err) {
@@ -116,12 +132,17 @@ export default function BoardPage() {
 
   useEffect(() => {
     loadData();
-    // 페이지 로드 후 약간의 딜레이를 두고 다시 한 번 데이터 로드 (새로 제출된 데이터 반영)
-    const timeoutId = setTimeout(() => {
-      loadData();
-    }, 500);
     
-    return () => clearTimeout(timeoutId);
+    // 페이지 포커스 시 데이터 새로고침 (다른 탭에서 제출 후 돌아왔을 때)
+    const handleFocus = () => {
+      loadData();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   // 페이지가 포커스되거나 보일 때 데이터 다시 로드 (새 데이터 반영)
