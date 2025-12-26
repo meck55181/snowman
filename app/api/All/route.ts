@@ -33,7 +33,7 @@ export async function GET(request: Request) {
   if (idParam) {
     const { data, error } = await supabase
       .from("responses")
-      .select("id, name, insta, recommender_insta, word, story, memory, city, city_message, ending_song, final_message, created_at, pos_seed")
+      .select("*")
       .eq("id", idParam)
       .single();
 
@@ -53,9 +53,10 @@ export async function GET(request: Request) {
   if (limit > 500) limit = 500;
 
   // RLS 정책 문제를 피하기 위해 모든 데이터 조회 시도
+  // 필드명이 없어도 에러가 나지 않도록 * 사용 (모든 필드 선택)
   const { data, error, count } = await supabase
     .from("responses")
-    .select("id, name, insta, recommender_insta, word, story, memory, city, city_message, ending_song, final_message, created_at, pos_seed", { count: 'exact' })
+    .select("*", { count: 'exact' })
     .order("created_at", { ascending: false })
     .limit(limit);
 
@@ -75,8 +76,15 @@ export async function GET(request: Request) {
   if (data && data.length > 0) {
     console.log("API: Response IDs:", data.map(r => r.id));
     console.log("API: Response names:", data.map(r => r.name));
+    console.log("API: Response instas:", data.map(r => r.insta));
+    console.log("API: First response fields:", Object.keys(data[0]));
+    console.log("API: First response has pos_seed:", data[0].pos_seed !== null && data[0].pos_seed !== undefined);
+    console.log("API: All responses data:", JSON.stringify(data, null, 2));
   } else {
     console.warn("API: No data returned from Supabase!");
+    if (error) {
+      console.error("API: Supabase error details:", error);
+    }
   }
 
   return NextResponse.json({ ok: true, responses: data ?? [] });

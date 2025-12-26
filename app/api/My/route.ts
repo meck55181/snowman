@@ -9,13 +9,16 @@ type Payload = {
   name?: string;
   insta?: string;
   recommenderInsta?: string;
-  word?: string;
-  story?: string;
-  memory?: string;
-  city?: string;
-  cityMessage?: string;
+  q1Word?: string;
+  q1WordDesc?: string;
+  q2Insight?: string;
+  q2InsightDesc?: string;
+  q3Content?: string;
+  q3ContentDesc?: string;
   endingSong?: string;
-  finalMessage?: string;
+  q4SongReason?: string;
+  q5Resolution?: string;
+  qFinalMessage?: string;
 };
 
 const HANDLE_REGEX = /^[a-z0-9._]{1,30}$/;
@@ -57,13 +60,16 @@ export async function POST(request: Request) {
   const name = body.name?.trim() ?? "";
   const insta = normalizeHandle(body.insta);
   const recommenderInsta = normalizeHandle(body.recommenderInsta);
-  const word = body.word?.trim() ?? "";
-  const story = body.story?.trim() ?? "";
-  const memory = body.memory?.trim() ?? "";
-  const city = body.city?.trim() ?? "";
-  const cityMessage = body.cityMessage?.trim() ?? "";
+  const q1Word = body.q1Word?.trim() ?? "";
+  const q1WordDesc = body.q1WordDesc?.trim() ?? "";
+  const q2Insight = body.q2Insight?.trim() ?? "";
+  const q2InsightDesc = body.q2InsightDesc?.trim() ?? "";
+  const q3Content = body.q3Content?.trim() ?? "";
+  const q3ContentDesc = body.q3ContentDesc?.trim() ?? "";
   const endingSong = body.endingSong?.trim() ?? "";
-  const finalMessage = body.finalMessage?.trim() ?? "";
+  const q4SongReason = body.q4SongReason?.trim() ?? "";
+  const q5Resolution = body.q5Resolution?.trim() ?? "";
+  const qFinalMessage = body.qFinalMessage?.trim() ?? "";
 
   if (name.length < 1 || name.length > 30) {
     return NextResponse.json(
@@ -94,42 +100,56 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!word || word.length < 1) {
+  if (!q1Word || q1Word.length < 1) {
     return NextResponse.json(
-      { ok: false, error: "올해를 대표하는 낱말을 입력해주세요." },
+      { ok: false, error: "올해의 낱말을 입력해주세요." },
       { status: 400 }
     );
   }
 
-  if (!story || story.length < 1) {
+  if (!q1WordDesc || q1WordDesc.length < 1) {
     return NextResponse.json(
-      { ok: false, error: "낱말에 담긴 이야기를 입력해주세요." },
+      { ok: false, error: "올해의 낱말에 대한 설명을 입력해주세요." },
       { status: 400 }
     );
   }
 
-  if (!memory || memory.length < 1) {
+  if (!q2Insight || q2Insight.length < 1) {
     return NextResponse.json(
-      { ok: false, error: "올해 가장 기억에 남는 장면을 입력해주세요." },
+      { ok: false, error: "올해의 깨달음을 입력해주세요." },
       { status: 400 }
     );
   }
 
-  if (!city || city.length < 1) {
+  if (!q2InsightDesc || q2InsightDesc.length < 1) {
     return NextResponse.json(
-      { ok: false, error: "올해 내가 살았던 도시를 입력해주세요." },
+      { ok: false, error: "올해의 깨달음에 대한 설명을 입력해주세요." },
       { status: 400 }
     );
   }
 
-  if (!cityMessage || cityMessage.length < 1) {
+  if (!q3Content || q3Content.length < 1) {
     return NextResponse.json(
-      { ok: false, error: "도시에게 하고 싶은 말을 입력해주세요." },
+      { ok: false, error: "올해의 콘텐츠를 입력해주세요." },
       { status: 400 }
     );
   }
 
-  if (!finalMessage || finalMessage.length < 1) {
+  if (!q3ContentDesc || q3ContentDesc.length < 1) {
+    return NextResponse.json(
+      { ok: false, error: "올해의 콘텐츠에 대한 설명을 입력해주세요." },
+      { status: 400 }
+    );
+  }
+
+  if (!q5Resolution || q5Resolution.length < 1) {
+    return NextResponse.json(
+      { ok: false, error: "내년의 다짐을 입력해주세요." },
+      { status: 400 }
+    );
+  }
+
+  if (!qFinalMessage || qFinalMessage.length < 1) {
     return NextResponse.json(
       { ok: false, error: "마지막 메시지를 입력해주세요." },
       { status: 400 }
@@ -151,13 +171,16 @@ export async function POST(request: Request) {
       .update({
         name,
         recommender_insta: recommenderInsta,
-        word,
-        story,
-        memory,
-        city,
-        city_message: cityMessage,
+        q1_word: q1Word,
+        q1_word_desc: q1WordDesc,
+        q2_insight: q2Insight,
+        q2_insight_desc: q2InsightDesc,
+        q3_content: q3Content,
+        q3_content_desc: q3ContentDesc,
         ending_song: endingSong || null,
-        final_message: finalMessage,
+        q4_song_reason: q4SongReason || null,
+        q5_resolution: q5Resolution,
+        q_final_message: qFinalMessage,
         created_at: new Date().toISOString()
       })
       .eq("insta", insta);
@@ -169,13 +192,16 @@ export async function POST(request: Request) {
       name,
       insta,
       recommender_insta: recommenderInsta,
-      word,
-      story,
-      memory,
-      city,
-      city_message: cityMessage,
+      q1_word: q1Word,
+      q1_word_desc: q1WordDesc,
+      q2_insight: q2Insight,
+      q2_insight_desc: q2InsightDesc,
+      q3_content: q3Content,
+      q3_content_desc: q3ContentDesc,
       ending_song: endingSong || null,
-      final_message: finalMessage,
+      q4_song_reason: q4SongReason || null,
+      q5_resolution: q5Resolution,
+      q_final_message: qFinalMessage,
       pos_seed: posSeed
     });
     error = insertError;
@@ -193,4 +219,3 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ ok: true });
 }
-

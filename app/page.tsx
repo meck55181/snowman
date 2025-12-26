@@ -102,7 +102,7 @@ export default function Home() {
               <img 
                 alt="연말정산 로고" 
                 className="block max-w-none size-full" 
-                src="/assets/d680040e57e3146b77c6e459b741b224b1bd5fcb.svg" 
+                src="/assets/tree_small.svg" 
               />
             </div>
 
@@ -144,7 +144,7 @@ export default function Home() {
 
             {/* 화살표들 */}
             {/* 1. 첫 번째 질문에서 YES로 가는 대각선 화살표 */}
-            <div className="absolute flex h-[24px] items-center justify-center left-[187.22px] top-[247.08px] w-[117.651px] pointer-events-none">
+            <div className="absolute flex h-[32px] items-center justify-center left-[187.22px] top-[247.08px] w-[117.651px] pointer-events-none">
               <div className="flex-none scale-x-[-100%]">
                 <div className="relative w-[119px] h-[33px]">
                   <img alt="" className="block max-w-none w-full h-full" src="/assets/Arrow 2.svg" />
@@ -153,7 +153,7 @@ export default function Home() {
             </div>
 
             {/* 2. 첫 번째 질문에서 NO로 가는 대각선 화살표 */}
-            <div className="absolute flex h-[24px] items-center justify-center left-[304.87px] top-[247.08px] w-[117.651px] pointer-events-none">
+            <div className="absolute flex h-[32px] items-center justify-center left-[304.87px] top-[247.08px] w-[117.651px] pointer-events-none">
               <div className="flex-none">
                 <div className="relative w-[119px] h-[33px]">
                   <img alt="" className="block max-w-none w-full h-full" src="/assets/Arrow 2.svg" />
@@ -184,8 +184,8 @@ export default function Home() {
             </div>
 
             {/* 5. 두 번째 질문에서 NO로 가는 대각선 화살표 */}
-            <div className="absolute flex h-[40px] items-center justify-center left-[180px] top-[460px] w-[240px] pointer-events-none">
-              <div className="flex-none rotate-[4deg]">
+            <div className="absolute flex h-[38px] items-center justify-center left-[180px] top-[460px] w-[240px] pointer-events-none">
+              <div className="flex-none rotate-[2deg]">
                 <div className="relative w-[240px] h-[28px]">
                   <img alt="" className="block max-w-none w-full h-full" src="/assets/Arrow 5.svg" />
                 </div>
@@ -225,7 +225,7 @@ export default function Home() {
               </Link>
               <Link
                 href={"/My" as any}
-                className="bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center px-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
+                className="bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center p-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
               >
                 <p className="font-semibold text-center">나의 결산</p>
                 <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠉⠣⠺⠈⠳⠇⠒</p>
@@ -283,13 +283,13 @@ export default function Home() {
                     <div className="flex flex-col gap-[4px] h-[80px] items-center w-[128px] relative">
                       <div className="relative w-[128px] h-[58px]">
                         <div className="absolute top-[0.02px] left-0 w-[58px] h-[58px]">
-                          <img alt="man 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" />
+                          <img alt="man 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/man 1.png" />
                         </div>
                         <div className="absolute top-[0.02px] left-[34.61px] w-[58px] h-[58px]">
-                          <img alt="man 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" />
+                          <img alt="man 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/man 1.png" />
                         </div>
                         <div className="absolute top-[0.02px] left-[69.61px] w-[58px] h-[58px]">
-                          <img alt="man 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/c8bdd116d3c4a84abefc09e8666ed38e8991bd15.png" />
+                          <img alt="man 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/man 1.png" />
                         </div>
                       </div>
                       <p className="text-[16.905px] font-semibold text-black text-center">(모두가 궁금해)</p>
@@ -305,7 +305,7 @@ export default function Home() {
                       <div className="absolute top-0 left-0 w-[76.671px] h-[76.671px] flex items-center justify-center">
                         <div className="rotate-[5.754deg]">
                           <div className="relative w-[70.005px] h-[70.005px]">
-                            <img alt="man (2) 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/8518a8fe65a2e7beedb844a206042ab586e2fc05.png" />
+                            <img alt="man (2) 1" className="absolute inset-0 w-full h-full object-cover object-center" src="/assets/man_2.png" />
                           </div>
                         </div>
                       </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ScrollRestoration from "./ScrollRestoration";
 
 export const metadata: Metadata = {
   title: "Snowman Board",
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
+        <ScrollRestoration />
         {children}
       </body>
     </html>

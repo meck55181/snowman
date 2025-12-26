@@ -18,13 +18,29 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
   const [name, setName] = useState("");
   const [insta, setInsta] = useState("");
   const [recommenderInsta, setRecommenderInsta] = useState(initialRef);
+  
+  // Q1: 올해의 낱말
   const [q1Word, setQ1Word] = useState("");
-  const [q1Story, setQ1Story] = useState("");
-  const [q2Memory, setQ2Memory] = useState("");
-  const [q3City, setQ3City] = useState("");
-  const [q3Message, setQ3Message] = useState("");
-  const [q4EndingSong, setQ4EndingSong] = useState("");
-  const [q5FinalMessage, setQ5FinalMessage] = useState("");
+  const [q1WordDesc, setQ1WordDesc] = useState("");
+  
+  // Q2: 올해의 깨달음
+  const [q2Insight, setQ2Insight] = useState("");
+  const [q2InsightDesc, setQ2InsightDesc] = useState("");
+  
+  // Q3: 올해의 콘텐츠
+  const [q3Content, setQ3Content] = useState("");
+  const [q3ContentDesc, setQ3ContentDesc] = useState("");
+  
+  // Q4: 내년 1월 1일에 들을 노래
+  const [q4Song, setQ4Song] = useState("");
+  const [q4SongReason, setQ4SongReason] = useState("");
+  
+  // Q5: 내년의 다짐
+  const [q5Resolution, setQ5Resolution] = useState("");
+  
+  // 마지막 메시지
+  const [finalMessage, setFinalMessage] = useState("");
+  
   const [state, setState] = useState<SubmitState>({ status: "idle" });
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -35,15 +51,21 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
     const trimmedInsta = insta.trim();
     const trimmedRecommender = recommenderInsta.trim();
     const trimmedQ1Word = q1Word.trim();
-    const trimmedQ1Story = q1Story.trim();
-    const trimmedQ2Memory = q2Memory.trim();
-    const trimmedQ3City = q3City.trim();
-    const trimmedQ3Message = q3Message.trim();
-    const trimmedQ4EndingSong = q4EndingSong.trim();
-    const trimmedQ5FinalMessage = q5FinalMessage.trim();
+    const trimmedQ1WordDesc = q1WordDesc.trim();
+    const trimmedQ2Insight = q2Insight.trim();
+    const trimmedQ2InsightDesc = q2InsightDesc.trim();
+    const trimmedQ3Content = q3Content.trim();
+    const trimmedQ3ContentDesc = q3ContentDesc.trim();
+    const trimmedQ4Song = q4Song.trim();
+    const trimmedQ4SongReason = q4SongReason.trim();
+    const trimmedQ5Resolution = q5Resolution.trim();
+    const trimmedFinalMessage = finalMessage.trim();
 
-    if (!trimmedName || !trimmedInsta || !trimmedRecommender || !trimmedQ1Word || 
-        !trimmedQ1Story || !trimmedQ2Memory || !trimmedQ3City || !trimmedQ3Message || !trimmedQ5FinalMessage) {
+    if (!trimmedName || !trimmedInsta || !trimmedRecommender || 
+        !trimmedQ1Word || !trimmedQ1WordDesc ||
+        !trimmedQ2Insight || !trimmedQ2InsightDesc ||
+        !trimmedQ3Content || !trimmedQ3ContentDesc ||
+        !trimmedQ5Resolution || !trimmedFinalMessage) {
       setState({
         status: "error",
         message: "모든 필수 필드를 입력해주세요."
@@ -58,13 +80,16 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
         name: trimmedName,
         insta: trimmedInsta,
         recommenderInsta: trimmedRecommender,
-        word: trimmedQ1Word,
-        story: trimmedQ1Story,
-        memory: trimmedQ2Memory,
-        city: trimmedQ3City,
-        cityMessage: trimmedQ3Message,
-        endingSong: trimmedQ4EndingSong,
-        finalMessage: trimmedQ5FinalMessage
+        q1Word: trimmedQ1Word,
+        q1WordDesc: trimmedQ1WordDesc,
+        q2Insight: trimmedQ2Insight,
+        q2InsightDesc: trimmedQ2InsightDesc,
+        q3Content: trimmedQ3Content,
+        q3ContentDesc: trimmedQ3ContentDesc,
+        endingSong: trimmedQ4Song,
+        q4SongReason: trimmedQ4SongReason,
+        q5Resolution: trimmedQ5Resolution,
+        qFinalMessage: trimmedFinalMessage
       })
     });
 
@@ -80,21 +105,21 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
     }
 
     // All 페이지로 완전히 새로고침하여 최신 데이터 표시
-    window.location.href = "/All";
+    window.location.href = `/All?t=${Date.now()}`;
   };
 
   return (
-    <div className="bg-[#eee] relative min-h-screen w-full p-16">
+    <div className="bg-[#eee] relative min-h-screen w-full">
       {/* 이전으로 링크 - 반응형 */}
       <Link
         href="/"
-        className="absolute left-16 top-4 sm:left-16 sm:top-[40px] text-[14px] sm:text-[16px] text-black font-normal hover:opacity-70 transition-opacity z-10"
+        className="absolute left-8 top-4 sm:left-16 sm:top-[40px] text-[14px] sm:text-[16px] text-black font-normal hover:opacity-70 transition-opacity z-10"
       >
         ← 이전으로
       </Link>
 
       {/* 왼쪽 상단 로고 - 반응형 (축소 버전) */}
-      <div className="absolute left-16 top-[48px] sm:left-16 sm:top-[72px] flex flex-col gap-[8px] items-center w-[80px] sm:w-[110px] z-10 pointer-events-none">
+      <div className="absolute left-8 top-[48px] sm:left-16 sm:top-[72px] flex flex-col gap-[8px] items-center w-[80px] sm:w-[110px] z-10 pointer-events-none">
         <div className="h-[20px] w-[72px] sm:h-[26px] sm:w-[94px] relative">
           <img 
             alt="나의결산 로고" 
@@ -108,7 +133,7 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
       </div>
 
       {/* 메인 폼 카드 - 반응형 */}
-      <div className="absolute left-1/2 top-[120px] sm:top-[140px] -translate-x-1/2 bg-white border border-black flex flex-col gap-6 sm:gap-[36px] p-4 sm:p-[40px] w-[calc(100%-128px)] sm:w-[596px] max-w-[596px] min-h-[800px] sm:min-h-[1271px]">
+      <div className="absolute left-1/2 top-[120px] sm:top-[140px] -translate-x-1/2 bg-white border border-black flex flex-col gap-6 sm:gap-[36px] p-4 sm:p-[24px] w-[calc(100%-48px)] sm:w-[596px] max-w-[596px] min-h-[800px] sm:min-h-[1271px]">
         <div className="flex flex-col gap-6 sm:gap-[36px] items-start w-full">
           {/* 제목 섹션 - 반응형 */}
           <div className="flex flex-col gap-3 sm:gap-[12px] items-start w-full sm:w-[391px]">
@@ -174,9 +199,9 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
               </div>
             </div>
 
-            {/* Q1. 올해를 대표하는 낱말은? */}
+            {/* Q1. 올해의 낱말은? */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q1. 올해를 대표하는 낱말은? *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q1. 올해의 낱말은? *</p>
               <input
                 type="text"
                 value={q1Word}
@@ -187,73 +212,109 @@ export default function SubmitForm({ initialRef = "" }: SubmitFormProps) {
               />
             </div>
 
-            {/* Q1-1. 낱말에 담긴 이야기를 적어주세요. */}
+            {/* Q1-1. 올해의 낱말에 대한 설명을 적어주세요. */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q1-1. 낱말에 담긴 이야기를 적어주세요. *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q1-1. 올해의 낱말에 대한 설명을 적어주세요. *</p>
               <textarea
-                value={q1Story}
-                onChange={(e) => setQ1Story(e.target.value)}
+                value={q1WordDesc}
+                onChange={(e) => setQ1WordDesc(e.target.value)}
                 className="border border-[#999] flex h-[100px] sm:h-[121px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black resize-none"
-                placeholder="이야기를 입력해주세요"
+                placeholder="설명을 입력해주세요"
                 required
               />
             </div>
 
-            {/* Q2. 올해 가장 기억에 장면 하나는? */}
+            {/* Q2. 올해의 깨달음은? */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q2. 올해 가장 기억에 장면 하나는? *</p>
-              <textarea
-                value={q2Memory}
-                onChange={(e) => setQ2Memory(e.target.value)}
-                className="border border-[#999] flex h-[100px] sm:h-[129px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black resize-none"
-                placeholder="기억에 남는 장면을 작성해주세요"
-                required
-              />
-            </div>
-
-            {/* Q3. 올해 내가 살았던 도시는? */}
-            <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q3. 올해 내가 살았던 도시는? *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q2. 올해의 깨달음은? *</p>
               <input
                 type="text"
-                value={q3City}
-                onChange={(e) => setQ3City(e.target.value)}
-                className="border border-[#999] flex h-[34px] sm:h-[36px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black"
-                placeholder="도시를 입력해주세요"
+                value={q2Insight}
+                onChange={(e) => setQ2Insight(e.target.value)}
+                className="border border-[#999] flex h-[38px] sm:h-[41px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black"
+                placeholder="깨달음을 입력해주세요"
                 required
               />
             </div>
 
-            {/* Q3-1. 올해 내가 살았던 도시에게 하고 싶은 말은? */}
+            {/* Q2-1. 올해의 깨달음에 대한 설명을 적어주세요. */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q3-1. 올해 내가 살았던 도시에게 하고 싶은 말은? *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q2-1. 올해의 깨달음에 대한 설명을 적어주세요. *</p>
               <textarea
-                value={q3Message}
-                onChange={(e) => setQ3Message(e.target.value)}
-                className="border border-[#999] flex h-[100px] sm:h-[129px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black resize-none"
-                placeholder="도시에게 전하고 싶은 말을 작성해주세요"
+                value={q2InsightDesc}
+                onChange={(e) => setQ2InsightDesc(e.target.value)}
+                className="border border-[#999] flex h-[100px] sm:h-[121px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black resize-none"
+                placeholder="설명을 입력해주세요"
                 required
               />
             </div>
 
-            {/* Q4. 2025년, 나의 엔딩곡은? */}
+            {/* Q3. 올해의 콘텐츠는? */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q4. 2025년, 나의 엔딩곡은?</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q3. 올해의 콘텐츠는? *</p>
               <input
                 type="text"
-                value={q4EndingSong}
-                onChange={(e) => setQ4EndingSong(e.target.value)}
-                className="border border-[#999] flex h-[34px] sm:h-[36px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black"
-                placeholder="엔딩곡을 입력해주세요"
+                value={q3Content}
+                onChange={(e) => setQ3Content(e.target.value)}
+                className="border border-[#999] flex h-[38px] sm:h-[41px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black"
+                placeholder="콘텐츠를 입력해주세요"
+                required
               />
             </div>
 
-            {/* Q5. 이 결산을 보게 될 누군가에게 남기고 싶은 아무말 */}
+            {/* Q3-1. 올해의 콘텐츠에 대한 설명을 적어주세요. */}
             <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
-              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q5. 이 결산을 보게 될 누군가에게 남기고 싶은 아무말 *</p>
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q3-1. 올해의 콘텐츠에 대한 설명을 적어주세요. *</p>
               <textarea
-                value={q5FinalMessage}
-                onChange={(e) => setQ5FinalMessage(e.target.value)}
+                value={q3ContentDesc}
+                onChange={(e) => setQ3ContentDesc(e.target.value)}
+                className="border border-[#999] flex h-[100px] sm:h-[121px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black resize-none"
+                placeholder="설명을 입력해주세요"
+                required
+              />
+            </div>
+
+            {/* Q4. 내년 1월 1일에 들을 노래는? */}
+            <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q4. 내년 1월 1일에 들을 노래는?</p>
+              <input
+                type="text"
+                value={q4Song}
+                onChange={(e) => setQ4Song(e.target.value)}
+                className="border border-[#999] flex h-[38px] sm:h-[41px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black"
+                placeholder="노래를 입력해주세요"
+              />
+            </div>
+
+            {/* Q4-1. 왜 이 노래를 선택하셨나요? */}
+            <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q4-1. 왜 이 노래를 선택하셨나요?</p>
+              <textarea
+                value={q4SongReason}
+                onChange={(e) => setQ4SongReason(e.target.value)}
+                className="border border-[#999] flex h-[100px] sm:h-[121px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black resize-none"
+                placeholder="이유를 입력해주세요"
+              />
+            </div>
+
+            {/* Q5. 내년의 다짐은? */}
+            <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q5. 내년의 다짐은? *</p>
+              <textarea
+                value={q5Resolution}
+                onChange={(e) => setQ5Resolution(e.target.value)}
+                className="border border-[#999] flex h-[100px] sm:h-[129px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black resize-none"
+                placeholder="다짐을 입력해주세요"
+                required
+              />
+            </div>
+
+            {/* 마지막 메시지 */}
+            <div className="flex flex-col gap-2 sm:gap-[8px] items-start w-full">
+              <p className="text-[14px] sm:text-[16px] text-black font-medium w-full">Q. 마지막으로 이 결산을 들을 사람들에게 남기고 싶은 아무말! *</p>
+              <textarea
+                value={finalMessage}
+                onChange={(e) => setFinalMessage(e.target.value)}
                 className="border border-[#999] flex h-[100px] sm:h-[129px] items-start p-2 sm:p-[10px] w-full text-[14px] sm:text-[16px] font-medium text-black placeholder:text-[#999] focus:outline-none focus:border-black resize-none"
                 placeholder="마지막 메시지를 작성해주세요"
                 required

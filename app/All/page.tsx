@@ -8,15 +8,25 @@ type ResponseRow = {
   name: string;
   insta: string;
   recommender_insta: string;
-  word: string;
-  story: string;
-  memory: string;
-  city: string;
-  city_message: string;
+  q1_word: string;
+  q1_word_desc: string;
+  q2_insight: string;
+  q2_insight_desc: string;
+  q3_content: string;
+  q3_content_desc: string;
   ending_song: string | null;
-  final_message: string;
+  q4_song_reason: string | null;
+  q5_resolution: string;
+  q_final_message: string;
   created_at: string;
   pos_seed: number;
+  // Legacy fields (for backward compatibility)
+  word?: string;
+  story?: string;
+  memory?: string;
+  city?: string;
+  city_message?: string;
+  final_message?: string;
 };
 
 type PositionedNode = ResponseRow & {
@@ -29,8 +39,8 @@ type Edge = {
   to: PositionedNode;
 };
 
-const VIEW_WIDTH = 1000;
-const VIEW_HEIGHT = 700;
+const VIEW_WIDTH = 800;
+const VIEW_HEIGHT = 600;
 
 // Asterisk 아이콘 경로 (추천인 수에 따라)
 const ASTERISK_1_SRC = "/assets/asterisk_1.svg"; // 0명
@@ -58,8 +68,20 @@ export default function BoardPage() {
   const [error, setError] = useState("");
   const [selected, setSelected] = useState<ResponseRow | null>(null);
   const [selectedLoading, setSelectedLoading] = useState(false);
-  const [toggleQ1, setToggleQ1] = useState(true); // 질문 1 토글 상태
-  const [toggleQ3, setToggleQ3] = useState(true); // 질문 3 토글 상태
+  const [toggleQ1, setToggleQ1] = useState(false); // 질문 1 토글 상태 (초기값: 닫힘)
+  const [toggleQ2, setToggleQ2] = useState(false); // 질문 2 토글 상태 (초기값: 닫힘)
+  const [toggleQ3, setToggleQ3] = useState(false); // 질문 3 토글 상태 (초기값: 닫힘)
+  const [toggleQ4, setToggleQ4] = useState(false); // 질문 4 토글 상태 (초기값: 닫힘)
+
+  // 모달이 열릴 때 토글 상태 초기화
+  useEffect(() => {
+    if (selected) {
+      setToggleQ1(false);
+      setToggleQ2(false);
+      setToggleQ3(false);
+      setToggleQ4(false);
+    }
+  }, [selected]);
 
   const loadData = async () => {
     setLoading(true);
@@ -94,6 +116,12 @@ export default function BoardPage() {
 
   useEffect(() => {
     loadData();
+    // 페이지 로드 후 약간의 딜레이를 두고 다시 한 번 데이터 로드 (새로 제출된 데이터 반영)
+    const timeoutId = setTimeout(() => {
+      loadData();
+    }, 500);
+    
+    return () => clearTimeout(timeoutId);
   }, []);
 
   // 페이지가 포커스되거나 보일 때 데이터 다시 로드 (새 데이터 반영)
@@ -157,22 +185,30 @@ export default function BoardPage() {
     console.log("Computing nodes from responses:", responses.length);
     console.log("Response IDs:", responses.map(r => r?.id));
     console.log("Response names:", responses.map(r => r?.name));
+    console.log("All responses:", responses);
     
     const nodes: PositionedNode[] = [];
     const byInsta = new Map<string, PositionedNode>();
 
     for (const row of responses) {
-      if (!row || !row.id) {
-        console.warn("Invalid row skipped:", row);
+      console.log("Processing row:", { id: row?.id, name: row?.name, insta: row?.insta, hasPosSeed: row?.pos_seed !== null && row?.pos_seed !== undefined });
+      if (!row) {
+        console.warn("Row is null or undefined, skipping");
         continue;
       }
-      const seed = row.pos_seed ?? 1;
+      if (!row.id) {
+        console.warn("Row missing id, skipping:", { row, keys: Object.keys(row || {}) });
+        continue;
+      }
+      // pos_seed가 없으면 랜덤으로 생성 (기존 데이터 호환성)
+      const seed = row.pos_seed ?? Math.floor(Math.random() * 2147483647);
       const rand = lcg(seed);
       const x = rand() * VIEW_WIDTH;
       const y = rand() * VIEW_HEIGHT;
       const node: PositionedNode = { ...row, x, y };
       nodes.push(node);
       byInsta.set(row.insta, node);
+      console.log("Added node:", { id: node.id, name: node.name, insta: node.insta });
     }
     
     console.log("Created nodes:", nodes.length);
@@ -222,25 +258,25 @@ export default function BoardPage() {
       {!loading && !error && (
         <>
           {/* 상단 왼쪽 돌아가기 링크 */}
-          <div className="absolute left-[72px] top-[40px] z-20 pointer-events-auto">
+          <div className="absolute left-8 top-4 sm:left-[72px] sm:top-[40px] z-20 pointer-events-auto">
             <Link
               href="/"
-              className="text-[16px] text-white hover:text-slate-300 transition-colors"
+              className="text-[14px] sm:text-[16px] text-white hover:text-slate-300 transition-colors"
             >
               ← 이전으로
             </Link>
           </div>
 
           {/* 상단 왼쪽 로고 (축소 버전) */}
-          <div className="absolute left-[64px] top-[80px] z-10 flex flex-col gap-[8px] items-center w-[130px] pointer-events-none">
-            <div className="h-[26px] w-[118px] relative">
+          <div className="absolute left-8 top-[48px] sm:left-[64px] sm:top-[80px] z-10 flex flex-col gap-[8px] items-center w-[80px] sm:w-[130px] pointer-events-none">
+            <div className="h-[20px] w-[72px] sm:h-[26px] sm:w-[118px] relative">
               <img 
                 alt="로고" 
                 className="block w-full h-full" 
                 src="/assets/모두의결산_로고.svg" 
               />
             </div>
-            <p className="text-[20px] text-white font-semibold" style={{ fontFamily: "'Noto Sans Symbols 2', 'Pretendard', sans-serif" }}>
+            <p className="text-[16px] sm:text-[20px] text-white font-semibold" style={{ fontFamily: "'Noto Sans Symbols 2', 'Pretendard', sans-serif" }}>
               ⠑⠥⠊⠍⠺⠨⠻⠇⠒
             </p>
           </div>
@@ -261,21 +297,21 @@ export default function BoardPage() {
                   // 각 노드의 asterisk 중심 좌표 계산
                   const getAsteriskCenter = (node: PositionedNode) => {
                     const count = outgoingCounts.get(node.id) ?? 0;
-                    let imgWidth = 22;
-                    let imgHeight = 22;
-                    let imgX = -11;
-                    let imgY = -19;
+                    let imgWidth = 28;
+                    let imgHeight = 28;
+                    let imgX = -14;
+                    let imgY = -24;
                     
                     if (count >= 5) {
-                      imgWidth = 18;
-                      imgHeight = 19;
-                      imgX = -9;
-                      imgY = -19;
+                      imgWidth = 24;
+                      imgHeight = 25;
+                      imgX = -12;
+                      imgY = -24;
                     } else if (count >= 3) {
-                      imgWidth = 18.057;
-                      imgHeight = 20.576;
-                      imgX = -9.0285;
-                      imgY = -20.576;
+                      imgWidth = 24;
+                      imgHeight = 26;
+                      imgX = -12;
+                      imgY = -26;
                     }
                     
                     // asterisk 이미지의 중심 좌표
@@ -315,21 +351,21 @@ export default function BoardPage() {
                   const count = outgoingCounts.get(node.id) ?? 0;
                   const asteriskSrc = getAsteriskSrc(count);
                   // 이미지 크기 결정
-                  let imgWidth = 22;
-                  let imgHeight = 22;
-                  let imgX = -11;
-                  let imgY = -19;
+                  let imgWidth = 28;
+                  let imgHeight = 28;
+                  let imgX = -14;
+                  let imgY = -24;
                   
                   if (count >= 5) {
-                    imgWidth = 18;
-                    imgHeight = 19;
-                    imgX = -9;
-                    imgY = -19;
+                    imgWidth = 24;
+                    imgHeight = 25;
+                    imgX = -12;
+                    imgY = -24;
                   } else if (count >= 3) {
-                    imgWidth = 18.057;
-                    imgHeight = 20.576;
-                    imgX = -9.0285;
-                    imgY = -20.576;
+                    imgWidth = 24;
+                    imgHeight = 26;
+                    imgX = -12;
+                    imgY = -26;
                   }
                   
                   // 첫 번째 노드만 로그 출력
@@ -372,10 +408,10 @@ export default function BoardPage() {
                       {/* 이름 텍스트 */}
                       <text
                         x={0}
-                        y={16}
+                        y={20}
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        className="text-[12px] fill-white pointer-events-none font-normal"
+                        className="text-[14px] fill-white pointer-events-none font-normal"
                         style={{ fill: "white", fontFamily: "'Pretendard', sans-serif" }}
                       >
                         {node.name || "이름 없음"}
@@ -467,14 +503,14 @@ export default function BoardPage() {
               {!selectedLoading && (
                 <div className="flex flex-col gap-[8px] items-end pt-[96px] pb-[32px] px-[55px] w-full">
                   <div className="flex flex-col gap-[24px] items-start w-[396px]">
-                    {/* 질문 1: 올해의 나를 대표하는 낱말은? */}
+                    {/* 질문 1: 올해의 낱말은? */}
                     <div className="flex flex-col gap-[8px] items-start w-full">
                       <div className="flex gap-[8px] items-center w-full">
                         <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
                           <p className="text-[12px] text-black font-medium">1</p>
                         </div>
                         <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">올해의 나를 대표하는 낱말은?</p>
+                          <p className="text-[12px] text-black font-medium">올해의 낱말은?</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-start w-full">
@@ -484,11 +520,11 @@ export default function BoardPage() {
                           className="bg-white border border-black flex h-[36px] items-center justify-center p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
                         >
                           <p className="text-[12px] text-black font-medium text-center">
-                            {selected.word || '낱말 답변'}
+                            {selected.q1_word || selected.word || '낱말 답변'}
                           </p>
                           <div
-                            className={`absolute h-[6px] left-[15px] top-[14px] w-[8px] transition-transform ${
-                              toggleQ1 ? '-rotate-90' : ''
+                            className={`absolute h-[6px] left-[15px] top-1/2 -translate-y-1/2 w-[8px] transition-transform ${
+                              toggleQ1 ? '' : '-rotate-90'
                             }`}
                           >
                             <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
@@ -497,40 +533,58 @@ export default function BoardPage() {
                         {toggleQ1 && (
                           <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[72px] items-center justify-center p-5 w-full">
                             <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
-                              {selected.story || '낱말 스토리 답변'}
+                              {selected.q1_word_desc || selected.story || '낱말 설명 답변'}
                             </p>
                           </div>
                         )}
                       </div>
                     </div>
 
-                    {/* 질문 2: 올해 가장 기억에 장면 하나는? */}
+                    {/* 질문 2: 올해의 깨달음은? */}
                     <div className="flex flex-col gap-[8px] items-start w-full">
                       <div className="flex gap-[8px] items-center w-full">
                         <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
                           <p className="text-[12px] text-black font-medium">2</p>
                         </div>
                         <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">올해 가장 기억에 장면 하나는?</p>
+                          <p className="text-[12px] text-black font-medium">올해의 깨달음은?</p>
                         </div>
                       </div>
-                      <div className="bg-white border border-black flex min-h-[36px] items-center justify-center p-5 w-full">
-                        <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
-                          {selected.memory || '올해 가장 기억에 장면 답변'}
-                        </p>
+                      <div className="flex flex-col items-start w-full">
+                        <button
+                          type="button"
+                          onClick={() => setToggleQ2(!toggleQ2)}
+                          className="bg-white border border-black flex h-[36px] items-center justify-center p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
+                        >
+                          <p className="text-[12px] text-black font-medium text-center">
+                            {selected.q2_insight || selected.memory || '깨달음 답변'}
+                          </p>
+                          <div
+                            className={`absolute h-[6px] left-[15px] top-1/2 -translate-y-1/2 w-[8px] transition-transform ${
+                              toggleQ2 ? '' : '-rotate-90'
+                            }`}
+                          >
+                            <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
+                          </div>
+                        </button>
+                        {toggleQ2 && (
+                          <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[72px] items-center justify-center p-5 w-full">
+                            <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
+                              {selected.q2_insight_desc || '깨달음 설명 답변'}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    {/* 질문 3: 올해 내가 살았던 도시에게 하고 싶은 말은? */}
+                    {/* 질문 3: 올해의 콘텐츠는? */}
                     <div className="flex flex-col gap-[8px] items-start w-full">
                       <div className="flex gap-[8px] items-center w-full">
                         <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
                           <p className="text-[12px] text-black font-medium">3</p>
                         </div>
                         <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">
-                            올해 내가 살았던 도시에게 하고 싶은 말은?
-                          </p>
+                          <p className="text-[12px] text-black font-medium">올해의 콘텐츠는?</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-start w-full">
@@ -540,11 +594,11 @@ export default function BoardPage() {
                           className="bg-white border border-black flex h-[36px] items-center justify-center p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
                         >
                           <p className="text-[12px] text-black font-medium text-center">
-                            {selected.city || '도시 답변'}
+                            {selected.q3_content || selected.city || '콘텐츠 답변'}
                           </p>
                           <div
-                            className={`absolute h-[6px] left-[15px] top-[14px] w-[8px] transition-transform ${
-                              toggleQ3 ? '-rotate-90' : ''
+                            className={`absolute h-[6px] left-[15px] top-1/2 -translate-y-1/2 w-[8px] transition-transform ${
+                              toggleQ3 ? '' : '-rotate-90'
                             }`}
                           >
                             <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
@@ -553,31 +607,77 @@ export default function BoardPage() {
                         {toggleQ3 && (
                           <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[73px] items-center justify-center p-5 w-full">
                             <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
-                              {selected.city_message || '도시에게 하고 싶은 말 답변'}
+                              {selected.q3_content_desc || selected.city_message || '콘텐츠 설명 답변'}
                             </p>
                           </div>
                         )}
                       </div>
                     </div>
 
-                    {/* 모두에게 하고 싶은 말 */}
+                    {/* 질문 4: 내년 1월 1일에 들을 노래는? */}
+                    {selected.ending_song && (
+                      <div className="flex flex-col gap-[8px] items-start w-full">
+                        <div className="flex gap-[8px] items-center w-full">
+                          <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
+                            <p className="text-[12px] text-black font-medium">4</p>
+                          </div>
+                          <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
+                            <p className="text-[12px] text-black font-medium">내년 1월 1일에 들을 노래는?</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-start w-full">
+                          <button
+                            type="button"
+                            onClick={() => setToggleQ4(!toggleQ4)}
+                            className="bg-white border border-black flex h-[36px] items-center justify-center p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
+                          >
+                            <p className="text-[12px] text-black font-medium text-center">
+                              {selected.ending_song || '노래 답변'}
+                            </p>
+                            <div
+                              className={`absolute h-[6px] left-[15px] top-1/2 -translate-y-1/2 w-[8px] transition-transform ${
+                                toggleQ4 ? '' : '-rotate-90'
+                              }`}
+                            >
+                              <img alt="toggle" className="block w-full h-full" src="/assets/toggle.svg" />
+                            </div>
+                          </button>
+                          {toggleQ4 && (
+                            <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[72px] items-center justify-center p-5 w-full">
+                              <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
+                                {selected.q4_song_reason || '노래 선택 이유 답변'}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 질문 5: 내년의 다짐은? */}
+                    <div className="flex flex-col gap-[8px] items-start w-full">
+                      <div className="flex gap-[8px] items-center w-full">
+                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
+                          <p className="text-[12px] text-black font-medium">5</p>
+                        </div>
+                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
+                          <p className="text-[12px] text-black font-medium">내년의 다짐은?</p>
+                        </div>
+                      </div>
+                      <div className="bg-white border border-black flex min-h-[36px] items-center justify-center p-5 w-full">
+                        <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
+                          {selected.q5_resolution || '내년의 다짐 답변'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 마지막 메시지 */}
                     <div className="bg-[#f7e982] border border-black flex min-h-[41.414px] items-center justify-center p-5 w-full">
                       <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
-                        {selected.final_message || '모두에게 하고 싶은 말 답변'}
+                        {selected.q_final_message || selected.final_message || '마지막 메시지 답변'}
                       </p>
                     </div>
                   </div>
 
-                  {/* 엔딩송 */}
-                  <div className="flex gap-[7px] items-center text-[12px] text-black w-[396px]">
-                    <p
-                      className="font-medium"
-                      style={{ fontFamily: "'Pretendard', 'Noto Sans Symbols', sans-serif" }}
-                    >
-                      ♫ 엔딩송:
-                    </p>
-                    <p className="font-medium">{selected.ending_song || '엔딩송 답변'}</p>
-                  </div>
                 </div>
               )}
             </div>
