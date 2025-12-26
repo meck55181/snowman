@@ -9,8 +9,18 @@ export const runtime = 'nodejs';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+// 디버깅: 환경 변수 확인
+console.log("My API Route - Environment check:");
+console.log("  SUPABASE_URL exists:", !!supabaseUrl);
+console.log("  SUPABASE_URL value:", supabaseUrl ? `${supabaseUrl.substring(0, 20)}...` : 'missing');
+console.log("  SERVICE_ROLE_KEY exists:", !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+console.log("  ANON_KEY exists:", !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+console.log("  Using service key:", !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+
 if (!supabaseUrl || !supabaseServiceKey) {
   console.error("Missing Supabase environment variables!");
+  console.error("  supabaseUrl:", supabaseUrl);
+  console.error("  supabaseServiceKey:", supabaseServiceKey ? 'exists' : 'missing');
 }
 
 const supabase = createClient(
@@ -176,16 +186,24 @@ export async function POST(request: Request) {
   }
 
   // Check if record with this insta already exists
-  const { data: existing } = await supabase
+  console.log("My API - Checking for existing record with insta:", insta);
+  const { data: existing, error: checkError } = await supabase
     .from("responses")
     .select("id")
     .eq("insta", insta)
     .single();
 
+  if (checkError && checkError.code !== 'PGRST116') {
+    console.error("My API - Error checking existing record:", checkError);
+  }
+
+  console.log("My API - Existing record found:", !!existing);
+
   let error;
   if (existing) {
     // Update existing record
-    const { error: updateError } = await supabase
+    console.log("My API - Updating existing record, id:", existing.id);
+    const { error: updateError, data: updateData } = await supabase
       .from("responses")
       .update({
         name,
@@ -202,12 +220,20 @@ export async function POST(request: Request) {
         q_final_message: qFinalMessage,
         created_at: new Date().toISOString()
       })
-      .eq("insta", insta);
+      .eq("insta", insta)
+      .select();
+    
+    console.log("My API - Update result:", {
+      error: updateError ? updateError.message : null,
+      data: updateData ? `Updated ${updateData.length} record(s)` : null
+    });
+    
     error = updateError;
   } else {
     // Insert new record with random pos_seed for node positioning
     const posSeed = Math.floor(Math.random() * 2147483647); // Random integer for positioning
-    const { error: insertError } = await supabase.from("responses").insert({
+    console.log("My API - Inserting new record with pos_seed:", posSeed);
+    const { error: insertError, data: insertData } = await supabase.from("responses").insert({
       name,
       insta,
       recommender_insta: recommenderInsta,
@@ -222,12 +248,23 @@ export async function POST(request: Request) {
       q5_resolution: q5Resolution,
       q_final_message: qFinalMessage,
       pos_seed: posSeed
+    }).select();
+    
+    console.log("My API - Insert result:", {
+      error: insertError ? insertError.message : null,
+      data: insertData ? `Inserted ${insertData.length} record(s)` : null
     });
+    
     error = insertError;
   }
 
   if (error) {
-    console.error("Supabase error:", error);
+    console.error("My API - Supabase error details:", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint
+    });
     return NextResponse.json(
       { ok: false, error: `Failed to save response: ${error.message}` },
       { status: 500 }
