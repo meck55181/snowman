@@ -80,18 +80,20 @@ export async function GET(request: Request) {
   console.log(`[API] Supabase query result - count: ${count}, data length: ${data?.length ?? 0}`);
 
   if (error) {
-    console.error("Supabase error:", error);
-    console.error("Error code:", error.code);
-    console.error("Error message:", error.message);
-    console.error("Error details:", error.details);
+    console.error("[API] Supabase error:", error);
+    console.error("[API] Error code:", error.code);
+    console.error("[API] Error message:", error.message);
+    console.error("[API] Error details:", error.details);
     return NextResponse.json(
       { ok: false, error: `Failed to load board: ${error.message}` },
       { status: 500 }
     );
   }
 
-  console.log(`API: Total count in DB: ${count ?? 'unknown'}`);
-  console.log(`API: Returning ${data?.length ?? 0} responses`);
+  console.log(`[API] Total count in DB: ${count ?? 'unknown'}`);
+  console.log(`[API] Returning ${data?.length ?? 0} responses`);
+  console.log(`[API] Supabase URL: ${supabaseUrl}`);
+  console.log(`[API] Using service role key: ${!!process.env.SUPABASE_SERVICE_ROLE_KEY}`);
   if (data && data.length > 0) {
     console.log("API: Response IDs:", data.map(r => r.id));
     console.log("API: Response names:", data.map(r => r.name));
