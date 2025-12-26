@@ -360,9 +360,9 @@ export default function Home() {
         className={`fixed left-1/2 -translate-x-1/2 bottom-[24px] flex flex-col gap-[5px] items-center z-30 ${scrollDownOpacity > 0.5 ? 'animate-blink' : ''}`}
         style={scrollDownStyle}
       >
-        <p className="text-[16px] font-medium text-white">scroll down</p>
+        <p className="text-[16px] font-medium text-white">scroll</p>
         <div className="w-[16px] h-[16px] flex items-center justify-center">
-          <img alt="화살표" className="block max-w-none w-full h-full" src="/assets/arrow_scroll.svg" />
+          <img alt="화살표" className="block max-w-none w-full h-full rotate-180" src="/assets/arrow_scroll.svg" />
         </div>
       </div>
     </div>
