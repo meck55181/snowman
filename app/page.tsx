@@ -79,7 +79,7 @@ export default function Home() {
       const height = window.innerHeight;
       
       if (width < 640) {
-        setScale(Math.min(width / CARD_WIDTH, height / CARD_HEIGHT, 0.5));
+        setScale(Math.min(width / CARD_WIDTH, height / CARD_HEIGHT, 0.7));
       } else if (width < 768) {
         setScale(Math.min(width / CARD_WIDTH, height / CARD_HEIGHT, 0.7));
       } else {
