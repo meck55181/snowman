@@ -1,9 +1,28 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 
 // Force dynamic rendering - API routes should not be statically generated
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+
+// 서버 사이드에서 서비스 역할 키 사용 (RLS 우회)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.error("Missing Supabase environment variables!");
+}
+
+const supabase = createClient(
+  supabaseUrl || '',
+  supabaseServiceKey || '',
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+);
 
 type Payload = {
   name?: string;
