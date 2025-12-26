@@ -3,8 +3,12 @@ import "./globals.css";
 import ScrollRestoration from "./ScrollRestoration";
 
 export const metadata: Metadata = {
-  title: "Snowman Board",
-  description: "Share and browse notes with your community."
+  title: "2025 연말결산",
+  description: "연말결산 같이해요",
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({
