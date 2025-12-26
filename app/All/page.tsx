@@ -258,7 +258,7 @@ export default function BoardPage() {
       {!loading && !error && (
         <>
           {/* 상단 왼쪽 돌아가기 링크 */}
-          <div className="absolute left-8 top-4 sm:left-[72px] sm:top-[40px] z-20 pointer-events-auto">
+          <div className="absolute left-14 top-8 sm:left-[72px] sm:top-[40px] z-20 pointer-events-auto">
             <Link
               href="/"
               className="text-[14px] sm:text-[16px] text-white hover:text-slate-300 transition-colors"
@@ -268,7 +268,7 @@ export default function BoardPage() {
           </div>
 
           {/* 상단 왼쪽 로고 (축소 버전) */}
-          <div className="absolute left-8 top-[48px] sm:left-[64px] sm:top-[80px] z-10 flex flex-col gap-[8px] items-center w-[80px] sm:w-[130px] pointer-events-none">
+          <div className="absolute left-12 top-16 sm:left-[64px] sm:top-[80px] z-10 flex flex-col gap-[8px] items-center w-[80px] sm:w-[130px] pointer-events-none">
             <div className="h-[20px] w-[72px] sm:h-[26px] sm:w-[118px] relative">
               <img 
                 alt="로고" 
@@ -424,40 +424,40 @@ export default function BoardPage() {
           </div>
 
           {/* 하단 오른쪽 범례 */}
-          <div className="absolute bottom-[64px] right-[64.6px] z-10 flex gap-[12px] items-center pointer-events-none">
-            <div className="flex flex-col gap-[8px] items-center w-[22px]">
-              <div className="h-[22px] w-[22px] relative">
+          <div className="absolute bottom-[40px] right-[40px] sm:bottom-[64px] sm:right-[64.6px] z-10 flex gap-[8px] sm:gap-[12px] items-center pointer-events-none">
+            <div className="flex flex-col gap-[4px] sm:gap-[8px] items-center w-[18px] sm:w-[22px]">
+              <div className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px] relative">
                 <img 
                   alt="asterisk_1" 
                   className="block w-full h-full" 
                   src={ASTERISK_1_SRC} 
                 />
               </div>
-              <p className="text-[12px] text-white text-center w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
+              <p className="text-[10px] sm:text-[12px] text-white text-center w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
                 ≥1
               </p>
             </div>
-            <div className="flex flex-col gap-[8px] items-start w-[19.395px]">
-              <div className="h-[20.576px] w-[18.057px] relative">
+            <div className="flex flex-col gap-[4px] sm:gap-[8px] items-start w-[16px] sm:w-[19.395px]">
+              <div className="h-[16px] w-[15px] sm:h-[20.576px] sm:w-[18.057px] relative">
                 <img 
                   alt="asterisk_2" 
                   className="block w-full h-full" 
                   src={ASTERISK_2_SRC} 
                 />
               </div>
-              <p className="text-[12px] text-white w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
+              <p className="text-[10px] sm:text-[12px] text-white w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
                 ≥3
               </p>
             </div>
-            <div className="flex flex-col gap-[8px] items-start w-[18px]">
-              <div className="h-[19px] w-[18px] relative">
+            <div className="flex flex-col gap-[4px] sm:gap-[8px] items-start w-[15px] sm:w-[18px]">
+              <div className="h-[15px] w-[15px] sm:h-[19px] sm:w-[18px] relative">
                 <img 
                   alt="asterisk_3" 
                   className="block w-full h-full" 
                   src={ASTERISK_3_SRC} 
                 />
               </div>
-              <p className="text-[12px] text-white w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
+              <p className="text-[10px] sm:text-[12px] text-white w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
                 ≥5
               </p>
             </div>
@@ -468,16 +468,16 @@ export default function BoardPage() {
       {/* 선택된 노드 상세 정보 모달 */}
       {selected && (
           <div
-            className="fixed inset-0 z-20 flex items-center justify-center bg-black/50 px-4"
+            className="fixed inset-0 z-20 flex items-center justify-center bg-black/50 px-4 sm:px-4"
             onClick={() => setSelected(null)}
           >
             <div
-              className="relative bg-[#eee] border border-black w-full max-w-[506px] overflow-y-auto"
+              className="relative bg-[#eee] border border-black w-full max-w-[506px] sm:max-w-[506px] overflow-y-auto"
               style={{ maxHeight: '80vh' }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* 상단 점자 텍스트 */}
-              <p className="absolute left-1/2 -translate-x-1/2 top-[32px] text-[19.879px] text-black font-normal text-nowrap" style={{ fontFamily: "'Noto Sans Symbols 2', 'Pretendard', sans-serif" }}>
+              <p className="absolute left-1/2 -translate-x-1/2 top-[16px] sm:top-[32px] text-[14px] sm:text-[19.879px] text-black font-normal text-nowrap" style={{ fontFamily: "'Noto Sans Symbols 2', 'Pretendard', sans-serif" }}>
                 ⠡⠑⠂⠨⠻⠇⠒
               </p>
 
@@ -485,7 +485,7 @@ export default function BoardPage() {
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="absolute right-[32.91px] top-[32px] w-[12px] h-[12px]"
+                className="absolute right-[16px] sm:right-[32.91px] top-[16px] sm:top-[32px] w-[12px] h-[12px]"
               >
                 <div className="absolute inset-[-5.89%]">
                   <img alt="닫기" className="block w-full h-full" src="/assets/X.svg" />
@@ -494,36 +494,36 @@ export default function BoardPage() {
 
               {/* 로딩 상태 */}
               {selectedLoading && (
-                <div className="flex items-center justify-center pt-[96px] pb-[32px] px-[55px]">
-                  <p className="text-black">Loading...</p>
+                <div className="flex items-center justify-center pt-[60px] sm:pt-[96px] pb-[24px] sm:pb-[32px] px-[16px] sm:px-[55px]">
+                  <p className="text-black text-[14px] sm:text-base">Loading...</p>
                 </div>
               )}
 
               {/* 메인 컨텐츠 - Figma 질문 카드 스타일 */}
               {!selectedLoading && (
-                <div className="flex flex-col gap-[8px] items-end pt-[96px] pb-[32px] px-[55px] w-full">
-                  <div className="flex flex-col gap-[24px] items-start w-[396px]">
+                <div className="flex flex-col gap-[8px] items-end pt-[60px] sm:pt-[96px] pb-[24px] sm:pb-[32px] px-[24px] sm:px-[55px] w-full">
+                  <div className="flex flex-col gap-[16px] sm:gap-[24px] items-start w-full sm:w-[396px]">
                     {/* 질문 1: 올해의 낱말은? */}
-                    <div className="flex flex-col gap-[8px] items-start w-full">
-                      <div className="flex gap-[8px] items-center w-full">
-                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">1</p>
+                    <div className="flex flex-col gap-[6px] sm:gap-[8px] items-start w-full">
+                      <div className="flex gap-[6px] sm:gap-[8px] items-center w-full">
+                        <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-[40px] sm:w-[52px] shrink-0">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium">1</p>
                         </div>
-                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">올해의 낱말은?</p>
+                        <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 flex-1 min-w-0">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium truncate">올해의 낱말은?</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-start w-full">
                         <button
                           type="button"
                           onClick={() => setToggleQ1(!toggleQ1)}
-                          className="bg-white border border-black flex h-[36px] items-center justify-center p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
+                          className="bg-white border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
                         >
-                          <p className="text-[12px] text-black font-medium text-center">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium text-center truncate px-[20px] sm:px-0">
                             {selected.q1_word || selected.word || '낱말 답변'}
                           </p>
                           <div
-                            className={`absolute h-[6px] left-[15px] top-1/2 -translate-y-1/2 w-[8px] transition-transform ${
+                            className={`absolute h-[5px] sm:h-[6px] left-[10px] sm:left-[15px] top-1/2 -translate-y-1/2 w-[7px] sm:w-[8px] transition-transform ${
                               toggleQ1 ? '' : '-rotate-90'
                             }`}
                           >
@@ -531,8 +531,8 @@ export default function BoardPage() {
                           </div>
                         </button>
                         {toggleQ1 && (
-                          <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[72px] items-center justify-center p-5 w-full">
-                            <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
+                          <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[60px] sm:min-h-[72px] items-center justify-center p-3 sm:p-5 w-full">
+                            <p className="text-[10px] sm:text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
                               {selected.q1_word_desc || selected.story || '낱말 설명 답변'}
                             </p>
                           </div>
@@ -541,26 +541,26 @@ export default function BoardPage() {
                     </div>
 
                     {/* 질문 2: 올해의 깨달음은? */}
-                    <div className="flex flex-col gap-[8px] items-start w-full">
-                      <div className="flex gap-[8px] items-center w-full">
-                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">2</p>
+                    <div className="flex flex-col gap-[6px] sm:gap-[8px] items-start w-full">
+                      <div className="flex gap-[6px] sm:gap-[8px] items-center w-full">
+                        <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-[40px] sm:w-[52px] shrink-0">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium">2</p>
                         </div>
-                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">올해의 깨달음은?</p>
+                        <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 flex-1 min-w-0">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium truncate">올해의 깨달음은?</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-start w-full">
                         <button
                           type="button"
                           onClick={() => setToggleQ2(!toggleQ2)}
-                          className="bg-white border border-black flex h-[36px] items-center justify-center p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
+                          className="bg-white border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
                         >
-                          <p className="text-[12px] text-black font-medium text-center">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium text-center truncate px-[20px] sm:px-0">
                             {selected.q2_insight || selected.memory || '깨달음 답변'}
                           </p>
                           <div
-                            className={`absolute h-[6px] left-[15px] top-1/2 -translate-y-1/2 w-[8px] transition-transform ${
+                            className={`absolute h-[5px] sm:h-[6px] left-[10px] sm:left-[15px] top-1/2 -translate-y-1/2 w-[7px] sm:w-[8px] transition-transform ${
                               toggleQ2 ? '' : '-rotate-90'
                             }`}
                           >
@@ -568,8 +568,8 @@ export default function BoardPage() {
                           </div>
                         </button>
                         {toggleQ2 && (
-                          <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[72px] items-center justify-center p-5 w-full">
-                            <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
+                          <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[60px] sm:min-h-[72px] items-center justify-center p-3 sm:p-5 w-full">
+                            <p className="text-[10px] sm:text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
                               {selected.q2_insight_desc || '깨달음 설명 답변'}
                             </p>
                           </div>
@@ -578,26 +578,26 @@ export default function BoardPage() {
                     </div>
 
                     {/* 질문 3: 올해의 콘텐츠는? */}
-                    <div className="flex flex-col gap-[8px] items-start w-full">
-                      <div className="flex gap-[8px] items-center w-full">
-                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">3</p>
+                    <div className="flex flex-col gap-[6px] sm:gap-[8px] items-start w-full">
+                      <div className="flex gap-[6px] sm:gap-[8px] items-center w-full">
+                        <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-[40px] sm:w-[52px] shrink-0">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium">3</p>
                         </div>
-                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">올해의 콘텐츠는?</p>
+                        <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 flex-1 min-w-0">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium truncate">올해의 콘텐츠는?</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-start w-full">
                         <button
                           type="button"
                           onClick={() => setToggleQ3(!toggleQ3)}
-                          className="bg-white border border-black flex h-[36px] items-center justify-center p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
+                          className="bg-white border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
                         >
-                          <p className="text-[12px] text-black font-medium text-center">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium text-center truncate px-[20px] sm:px-0">
                             {selected.q3_content || selected.city || '콘텐츠 답변'}
                           </p>
                           <div
-                            className={`absolute h-[6px] left-[15px] top-1/2 -translate-y-1/2 w-[8px] transition-transform ${
+                            className={`absolute h-[5px] sm:h-[6px] left-[10px] sm:left-[15px] top-1/2 -translate-y-1/2 w-[7px] sm:w-[8px] transition-transform ${
                               toggleQ3 ? '' : '-rotate-90'
                             }`}
                           >
@@ -605,8 +605,8 @@ export default function BoardPage() {
                           </div>
                         </button>
                         {toggleQ3 && (
-                          <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[73px] items-center justify-center p-5 w-full">
-                            <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
+                          <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[60px] sm:min-h-[73px] items-center justify-center p-3 sm:p-5 w-full">
+                            <p className="text-[10px] sm:text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
                               {selected.q3_content_desc || selected.city_message || '콘텐츠 설명 답변'}
                             </p>
                           </div>
@@ -616,26 +616,26 @@ export default function BoardPage() {
 
                     {/* 질문 4: 내년 1월 1일에 들을 노래는? */}
                     {selected.ending_song && (
-                      <div className="flex flex-col gap-[8px] items-start w-full">
-                        <div className="flex gap-[8px] items-center w-full">
-                          <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
-                            <p className="text-[12px] text-black font-medium">4</p>
+                      <div className="flex flex-col gap-[6px] sm:gap-[8px] items-start w-full">
+                        <div className="flex gap-[6px] sm:gap-[8px] items-center w-full">
+                          <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-[40px] sm:w-[52px] shrink-0">
+                            <p className="text-[10px] sm:text-[12px] text-black font-medium">4</p>
                           </div>
-                          <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
-                            <p className="text-[12px] text-black font-medium">내년 1월 1일에 들을 노래는?</p>
+                          <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 flex-1 min-w-0">
+                            <p className="text-[10px] sm:text-[12px] text-black font-medium truncate">내년 1월 1일에 들을 노래는?</p>
                           </div>
                         </div>
                         <div className="flex flex-col items-start w-full">
                           <button
                             type="button"
                             onClick={() => setToggleQ4(!toggleQ4)}
-                            className="bg-white border border-black flex h-[36px] items-center justify-center p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
+                            className="bg-white border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-full relative cursor-pointer hover:opacity-90 transition-opacity"
                           >
-                            <p className="text-[12px] text-black font-medium text-center">
+                            <p className="text-[10px] sm:text-[12px] text-black font-medium text-center truncate px-[20px] sm:px-0">
                               {selected.ending_song || '노래 답변'}
                             </p>
                             <div
-                              className={`absolute h-[6px] left-[15px] top-1/2 -translate-y-1/2 w-[8px] transition-transform ${
+                              className={`absolute h-[5px] sm:h-[6px] left-[10px] sm:left-[15px] top-1/2 -translate-y-1/2 w-[7px] sm:w-[8px] transition-transform ${
                                 toggleQ4 ? '' : '-rotate-90'
                               }`}
                             >
@@ -643,8 +643,8 @@ export default function BoardPage() {
                             </div>
                           </button>
                           {toggleQ4 && (
-                            <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[72px] items-center justify-center p-5 w-full">
-                              <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
+                            <div className="bg-white border-t-0 border-r border-b border-l border-black flex min-h-[60px] sm:min-h-[72px] items-center justify-center p-3 sm:p-5 w-full">
+                              <p className="text-[10px] sm:text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
                                 {selected.q4_song_reason || '노래 선택 이유 답변'}
                               </p>
                             </div>
@@ -654,25 +654,25 @@ export default function BoardPage() {
                     )}
 
                     {/* 질문 5: 내년의 다짐은? */}
-                    <div className="flex flex-col gap-[8px] items-start w-full">
-                      <div className="flex gap-[8px] items-center w-full">
-                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[52px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">5</p>
+                    <div className="flex flex-col gap-[6px] sm:gap-[8px] items-start w-full">
+                      <div className="flex gap-[6px] sm:gap-[8px] items-center w-full">
+                        <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 w-[40px] sm:w-[52px] shrink-0">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium">5</p>
                         </div>
-                        <div className="bg-[#95acac] border border-black flex h-[36px] items-center justify-center p-5 w-[336px] shrink-0">
-                          <p className="text-[12px] text-black font-medium">내년의 다짐은?</p>
+                        <div className="bg-[#95acac] border border-black flex h-[32px] sm:h-[36px] items-center justify-center p-3 sm:p-5 flex-1 min-w-0">
+                          <p className="text-[10px] sm:text-[12px] text-black font-medium truncate">내년의 다짐은?</p>
                         </div>
                       </div>
-                      <div className="bg-white border border-black flex min-h-[36px] items-center justify-center p-5 w-full">
-                        <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
+                      <div className="bg-white border border-black flex min-h-[32px] sm:min-h-[36px] items-center justify-center p-3 sm:p-5 w-full">
+                        <p className="text-[10px] sm:text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
                           {selected.q5_resolution || '내년의 다짐 답변'}
                         </p>
                       </div>
                     </div>
 
                     {/* 마지막 메시지 */}
-                    <div className="bg-[#f7e982] border border-black flex min-h-[41.414px] items-center justify-center p-5 w-full">
-                      <p className="text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
+                    <div className="bg-[#f7e982] border border-black flex min-h-[36px] sm:min-h-[41.414px] items-center justify-center p-3 sm:p-5 w-full">
+                      <p className="text-[10px] sm:text-[12px] text-black font-medium whitespace-pre-wrap text-center w-full">
                         {selected.q_final_message || selected.final_message || '마지막 메시지 답변'}
                       </p>
                     </div>
