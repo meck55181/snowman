@@ -9,8 +9,17 @@ export const runtime = 'nodejs';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+// 디버깅: 사용 중인 Supabase URL 확인 (도메인만 로그)
+if (supabaseUrl) {
+  const urlObj = new URL(supabaseUrl);
+  console.log(`[API] Using Supabase URL: ${urlObj.hostname}`);
+} else {
+  console.error("[API] Missing NEXT_PUBLIC_SUPABASE_URL!");
+}
+
 if (!supabaseUrl || !supabaseServiceKey) {
-  console.error("Missing Supabase environment variables!");
+  console.error("[API] Missing Supabase environment variables!");
+  console.error(`[API] URL: ${supabaseUrl ? 'SET' : 'MISSING'}, Key: ${supabaseServiceKey ? 'SET' : 'MISSING'}`);
 }
 
 const supabase = createClient(
@@ -61,11 +70,14 @@ export async function GET(request: Request) {
 
   // RLS 정책 문제를 피하기 위해 모든 데이터 조회 시도
   // 필드명이 없어도 에러가 나지 않도록 * 사용 (모든 필드 선택)
+  console.log(`[API] Querying Supabase for responses (limit: ${limit})`);
   const { data, error, count } = await supabase
     .from("responses")
     .select("*", { count: 'exact' })
     .order("created_at", { ascending: false })
     .limit(limit);
+  
+  console.log(`[API] Supabase query result - count: ${count}, data length: ${data?.length ?? 0}`);
 
   if (error) {
     console.error("Supabase error:", error);
