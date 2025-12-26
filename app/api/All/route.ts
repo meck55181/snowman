@@ -38,13 +38,17 @@ export async function GET(request: Request) {
       .single();
 
     if (error) {
-      return NextResponse.json(
+      const errorResponse = NextResponse.json(
         { ok: false, error: "Failed to load node" },
         { status: 500 }
       );
+      errorResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+      return errorResponse;
     }
 
-    return NextResponse.json({ ok: true, response: data });
+    const response = NextResponse.json({ ok: true, response: data });
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    return response;
   }
 
   // 전체 리스트 조회
@@ -87,5 +91,12 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true, responses: data ?? [] });
+  // 캐시 방지 헤더 추가
+  const response = NextResponse.json({ ok: true, responses: data ?? [] });
+  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+  response.headers.set('Pragma', 'no-cache');
+  response.headers.set('Expires', '0');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  
+  return response;
 }
