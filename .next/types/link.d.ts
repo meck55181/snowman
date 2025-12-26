@@ -30,10 +30,10 @@ declare namespace __next_route_internal_types__ {
 
   type StaticRoutes = 
     | `/`
-    | `/api/All`
-    | `/api/My`
     | `/All`
     | `/My`
+    | `/api/All`
+    | `/api/My`
   type DynamicRoutes<T extends string = string> = never
 
   type RouteImpl<T> = 

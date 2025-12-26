@@ -7,56 +7,8 @@ import Link from "next/link";
 const CARD_WIDTH = 612;
 const CARD_HEIGHT = 792;
 const FONT_FAMILY = "'Pretendard', 'Noto Sans Symbols 2', sans-serif";
+const SCROLL_THRESHOLD = 300; // 이 값 이상 스크롤하면 PosterPage가 한번에 사라짐
 
-// 대각선 화살표 컴포넌트
-interface DiagonalArrowProps {
-  src: string;
-  rotate: string;
-  skew?: string;
-  width: string;
-  height?: string;
-  insetStyle?: React.CSSProperties;
-}
-
-const DiagonalArrow = ({ src, rotate, skew, width, height, insetStyle }: DiagonalArrowProps) => {
-  const transformStyle = useMemo(() => {
-    if (skew) {
-      return { transform: `skewX(${skew})` };
-    }
-    return undefined;
-  }, [skew]);
-
-  return (
-    <div className={rotate} style={transformStyle}>
-      <div className="relative" style={{ width, height: height || "100%" }}>
-        <div className="absolute" style={insetStyle || { top: "-4.57px", bottom: "-4.57px", left: "-0.51%", right: "0" }}>
-          <img alt="" className="block max-w-none w-full h-full" src={src} />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// 세로 화살표 컴포넌트
-interface VerticalArrowProps {
-  top: string;
-  left: string;
-  height: string;
-  width?: string;
-  insetStyle?: React.CSSProperties;
-}
-
-const VerticalArrow = ({ top, left, height, width = "0", insetStyle }: VerticalArrowProps) => (
-  <div className="absolute flex items-center justify-center pointer-events-none" style={{ top, left, width, height }}>
-    <div className="rotate-[90deg]">
-      <div className="relative" style={{ width: width === "0" ? "26px" : width, height: "100%" }}>
-        <div className="absolute" style={insetStyle || { top: "-4.57px", bottom: "-4.57px", left: "-2.39%", right: "0" }}>
-          <img alt="" className="block max-w-none w-full h-full" src="/assets/Arrow 9.svg" />
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -78,9 +30,7 @@ export default function Home() {
       const width = window.innerWidth;
       const height = window.innerHeight;
       
-      if (width < 640) {
-        setScale(Math.min(width / CARD_WIDTH, height / CARD_HEIGHT, 0.7));
-      } else if (width < 768) {
+      if (width < 900) {
         setScale(Math.min(width / CARD_WIDTH, height / CARD_HEIGHT, 0.7));
       } else {
         setScale(Math.min(width / CARD_WIDTH, height / CARD_HEIGHT, 0.85));
@@ -93,20 +43,28 @@ export default function Home() {
   }, []);
 
   // 메모이제이션된 계산 값들
-  const posterPageOffset = useMemo(() => scrollY * 1.2, [scrollY]);
-  const posterPageOpacity = useMemo(() => Math.max(0, 1 - scrollY / 400), [scrollY]);
+  const posterPageOffset = useMemo(() => {
+    if (scrollY < SCROLL_THRESHOLD) {
+      return 0;
+    }
+    return 500; // 한번에 위로 올라가는 거리
+  }, [scrollY]);
+  const posterPageOpacity = useMemo(() => {
+    return scrollY < SCROLL_THRESHOLD ? 1 : 0;
+  }, [scrollY]);
   const scrollDownOpacity = useMemo(() => Math.max(0, 1 - scrollY / 200), [scrollY]);
 
   // 메모이제이션된 스타일 객체들
   const linkerPageStyle = useMemo(() => ({
-    transform: `translate(-50%, -50%) rotate(356deg) scale(${scale})`,
+    transform: `translate(-50%, -50%) scale(${scale})`,
     zIndex: 10,
   }), [scale]);
 
   const posterPageStyle = useMemo(() => ({
-    transform: `translate(calc(-50% + 8.12px), calc(-50% - ${posterPageOffset}px + 14.38px)) rotate(4deg) scale(${scale})`,
+    transform: `translate(calc(-50% + 8.12px), calc(-50% - ${posterPageOffset}px + 14.38px)) rotate(8deg) scale(${scale})`,
     opacity: posterPageOpacity,
     zIndex: 20,
+    transition: 'transform 0.5s ease-out, opacity 0.5s ease-out',
   }), [posterPageOffset, posterPageOpacity, scale]);
 
   const scrollDownStyle = useMemo(() => ({
@@ -136,119 +94,148 @@ export default function Home() {
           className="fixed top-1/2 left-1/2 w-[612px] h-[792px] pointer-events-auto"
           style={linkerPageStyle}
         >
-          <div className="bg-[#eee] border-2 border-black h-full w-full overflow-hidden relative flex items-center justify-center">
-            <div className="relative w-[479.094px] flex flex-col items-center gap-7">
-              {/* LinkerPage 전체 내용 */}
-              <div className="h-[87px] w-[161.616px] relative">
-                <img 
-                  alt="연말정산 로고" 
-                  className="block w-full h-full object-contain" 
-                  src="/assets/d680040e57e3146b77c6e459b741b224b1bd5fcb.svg" 
-                />
-              </div>
-
-              <div className="relative w-[477px] h-[401px]">
-                {/* 첫 번째 질문 박스 */}
-                <div className="absolute top-0 left-0 bg-white border border-black flex items-center justify-center p-[6.212px] h-[94px] w-[477px]">
-                  <div className="text-base font-medium text-black text-center leading-normal">
-                    <p className="mb-0">이제 곧 2025년이 끝난다는 사실.</p>
-                    <p>알고 계셨나요?</p>
-                  </div>
-                </div>
-
-                {/* 첫 번째 YES 박스 */}
-                <div className="absolute top-[132px] left-0 bg-white border border-black flex items-center justify-center p-[6.212px] h-[52px] w-[225px]">
-                  <p className="text-base font-medium text-black">YES</p>
-                </div>
-
-                {/* 첫 번째 NO 박스 */}
-                <div className="absolute top-[132px] left-[251px] bg-white border border-black flex items-center justify-center p-[6.212px] h-[52px] w-[225px]">
-                  <p className="text-base font-medium text-black">NO</p>
-                </div>
-
-                {/* 두 번째 질문 박스 (YES 아래) */}
-                <div className="absolute top-[222px] left-0 bg-white border border-black flex items-center justify-center p-[6.212px] h-[89px] w-[225px]">
-                  <div className="text-base font-medium text-black text-center leading-normal">
-                    <p className="mb-0">연말정산을</p>
-                    <p>작성했나요?</p>
-                  </div>
-                </div>
-
-                {/* 두 번째 YES 박스 */}
-                <div className="absolute top-[348px] left-0 bg-white border border-black flex items-center justify-center p-[6.212px] h-[53px] w-[225px]">
-                  <p className="text-base font-medium text-black">YES</p>
-                </div>
-
-                {/* 두 번째 NO 박스 */}
-                <div className="absolute top-[348px] left-[251px] bg-white border border-black flex items-center justify-center p-[6.212px] h-[53px] w-[225px]">
-                  <p className="text-base font-medium text-black">NO</p>
-                </div>
-
-                {/* 화살표들 */}
-                {/* 1. 첫 번째 질문에서 YES로 가는 대각선 화살표 */}
-                <div className="absolute top-[94.24px] left-[120.85px] w-[117.651px] h-[28.479px] flex items-center justify-center pointer-events-none">
-                  <DiagonalArrow 
-                    src="/assets/Arrow 1.svg"
-                    rotate="rotate-[0deg]"
-                    skew="0deg"
-                    width="121.049px"
-                  />
-                </div>
-
-                {/* 2. 첫 번째 질문에서 NO로 가는 대각선 화살표 */}
-                <div className="absolute top-[94.24px] left-[120.85px] w-[117.651px] h-[28.479px] flex items-center justify-center pointer-events-none">
-                  <DiagonalArrow 
-                    src="/assets/Arrow 2.svg"
-                    rotate="rotate-[90deg]"
-                    skew="0deg"
-                    width="121.049px"
-                  />
-                </div>
-
-                {/* 3. 첫 번째 YES에서 두 번째 질문으로 가는 세로 화살표 */}
-                <VerticalArrow top="184px" left="113px" height="27px" width="0" insetStyle={{ top: "-4.57px", bottom: "-4.57px", left: "-2.3%", right: "0" }} />
-
-                {/* 4. 두 번째 질문에서 NO로 가는 대각선 화살표 */}
-                <div className="absolute top-[311.29px] left-[112.85px] w-[249.481px] h-[27.569px] flex items-center justify-center pointer-events-none">
-                  <DiagonalArrow 
-                    src="/assets/Arrow 5.svg"
-                    rotate="rotate-[6.306deg]"
-                    width="251px"
-                    insetStyle={{ top: "-4.57px", bottom: "-4.57px", left: "-0.25%", right: "0" }}
-                  />
-                </div>
-
-                {/* 5. 두 번째 질문에서 YES로 가는 세로 화살표 */}
-                <VerticalArrow top="311px" left="113px" height="26px" />
-
-                {/* 6. 두 번째 YES에서 아래로 가는 세로 화살표 */}
-                <VerticalArrow top="401px" left="113px" height="26px" />
-
-                {/* 7. 두 번째 NO에서 아래로 가는 세로 화살표 */}
-                <VerticalArrow top="401px" left="364px" height="26px" />
-              </div>
-
-              <div className="flex gap-[29px] items-center w-full">
-                <Link
-                  href={"/All" as any}
-                  className="bg-[#95acac] border border-black flex flex-col gap-[11.258px] h-[88px] items-center justify-center px-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
-                >
-                  <p className="font-semibold text-center">모두의 결산</p>
-                  <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠑⠥⠊⠍⠺⠀⠈⠳⠇⠒</p>
-                </Link>
-                <Link
-                  href={"/My" as any}
-                  className="bg-[#95acac] border border-black flex flex-col gap-[11.258px] h-[88px] items-center justify-center px-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
-                >
-                  <p className="font-semibold text-center">나의 결산</p>
-                  <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠉⠣⠺⠈⠳⠇⠒</p>
-                </Link>
-              </div>
-
-              <p className="text-[24px] text-black text-center font-normal" style={{ fontFamily: FONT_FAMILY }}>
-                ⠡⠑⠂⠈⠳⠇⠒
-              </p>
+          <div className="bg-[#eee] border-2 border-black h-full w-full overflow-hidden relative">
+            {/* LinkerPage 전체 내용 - Figma 디자인에 맞춘 absolute positioning */}
+            
+            {/* 로고 */}
+            <div className="absolute h-[87px] left-[224.74px] top-[38.5px] w-[161.616px]">
+              <img 
+                alt="연말정산 로고" 
+                className="block max-w-none size-full" 
+                src="/assets/d680040e57e3146b77c6e459b741b224b1bd5fcb.svg" 
+              />
             </div>
+
+            {/* 첫 번째 질문 박스 */}
+            <div className="absolute bg-white border border-black border-solid flex h-[94px] items-center justify-center left-[67.05px] p-[6.212px] top-[153.5px] w-[477px]">
+              <div className="text-base font-medium text-black text-center leading-normal">
+                <p className="mb-0">이제 곧 2025년이 끝난다는 사실.</p>
+                <p>알고 계셨나요?</p>
+              </div>
+            </div>
+
+            {/* 첫 번째 YES 박스 */}
+            <div className="absolute bg-white border border-black border-solid flex h-[52px] items-center justify-center left-[67.05px] p-[6.212px] top-[285.5px] w-[225px]">
+              <p className="text-base font-medium text-black">YES</p>
+            </div>
+
+            {/* 첫 번째 NO 박스 */}
+            <div className="absolute bg-white border border-black border-solid flex h-[52px] items-center justify-center left-[318.05px] p-[6.212px] top-[285.5px] w-[225px]">
+              <p className="text-base font-medium text-black">NO</p>
+            </div>
+
+            {/* 두 번째 질문 박스 */}
+            <div className="absolute bg-white border border-black border-solid flex h-[89px] items-center justify-center left-[67.05px] p-[6.212px] top-[375.5px] w-[225px]">
+              <div className="text-base font-medium text-black text-center leading-normal">
+                <p className="mb-0">연말결산을</p>
+                <p>작성했나요?</p>
+              </div>
+            </div>
+
+            {/* 두 번째 YES 박스 */}
+            <div className="absolute bg-white border border-black border-solid flex h-[53px] items-center justify-center left-[67.05px] p-[6.212px] top-[501.5px] w-[225px]">
+              <p className="text-base font-medium text-black">YES</p>
+            </div>
+
+            {/* 두 번째 NO 박스 */}
+            <div className="absolute bg-white border border-black border-solid flex h-[53px] items-center justify-center left-[318.05px] p-[6.212px] top-[501.5px] w-[225px]">
+              <p className="text-base font-medium text-black">NO</p>
+            </div>
+
+            {/* 화살표들 */}
+            {/* 1. 첫 번째 질문에서 YES로 가는 대각선 화살표 */}
+            <div className="absolute flex h-[24px] items-center justify-center left-[187.22px] top-[247.08px] w-[117.651px] pointer-events-none">
+              <div className="flex-none scale-x-[-100%]">
+                <div className="relative w-[119px] h-[33px]">
+                  <img alt="" className="block max-w-none w-full h-full" src="/assets/Arrow 2.svg" />
+                </div>
+              </div>
+            </div>
+
+            {/* 2. 첫 번째 질문에서 NO로 가는 대각선 화살표 */}
+            <div className="absolute flex h-[24px] items-center justify-center left-[304.87px] top-[247.08px] w-[117.651px] pointer-events-none">
+              <div className="flex-none">
+                <div className="relative w-[119px] h-[33px]">
+                  <img alt="" className="block max-w-none w-full h-full" src="/assets/Arrow 2.svg" />
+                </div>
+              </div>
+            </div>
+
+            {/* 3. 첫 번째 YES에서 두 번째 질문으로 가는 세로 화살표 */}
+            <div className="absolute flex h-[24px] items-center justify-center left-[179.55px] top-[337.5px] w-0 pointer-events-none">
+              <div className="flex-none rotate-[90deg]">
+                <div className="h-0 relative w-[27px]">
+                  <div className="absolute inset-[-4.57px_-2.3%_-4.57px_0]">
+                    <img alt="" className="block max-w-none size-full" src="/assets/Arrow 9.svg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. 두 번째 질문에서 YES로 가는 세로 화살표 */}
+            <div className="absolute flex h-[24px] items-center justify-center left-[179.89px] top-[464.5px] w-0 pointer-events-none">
+              <div className="flex-none rotate-[90deg]">
+                <div className="h-0 relative w-[26px]">
+                  <div className="absolute inset-[-4.57px_-2.39%_-4.57px_0]">
+                    <img alt="" className="block max-w-none size-full" src="/assets/Arrow 9.svg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. 두 번째 질문에서 NO로 가는 대각선 화살표 */}
+            <div className="absolute flex h-[40px] items-center justify-center left-[180px] top-[460px] w-[240px] pointer-events-none">
+              <div className="flex-none rotate-[4deg]">
+                <div className="relative w-[240px] h-[28px]">
+                  <img alt="" className="block max-w-none w-full h-full" src="/assets/Arrow 5.svg" />
+                </div>
+              </div>
+            </div>
+
+            {/* 6. 두 번째 YES에서 아래로 가는 세로 화살표 */}
+            <div className="absolute flex h-[24px] items-center justify-center left-[180.05px] top-[554.5px] w-0 pointer-events-none">
+              <div className="flex-none rotate-[90deg]">
+                <div className="h-0 relative w-[26px]">
+                  <div className="absolute inset-[-4.57px_-2.39%_-4.57px_0]">
+                    <img alt="" className="block max-w-none size-full" src="/assets/Arrow 9.svg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 7. 두 번째 NO에서 아래로 가는 세로 화살표 */}
+            <div className="absolute flex h-[24px] items-center justify-center left-[431.05px] top-[554.5px] w-0 pointer-events-none">
+              <div className="flex-none rotate-[90deg]">
+                <div className="h-0 relative w-[26px]">
+                  <div className="absolute inset-[-4.57px_-2.39%_-4.57px_0]">
+                    <img alt="" className="block max-w-none size-full" src="/assets/Arrow 9.svg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 버튼들 */}
+            <div className="absolute flex gap-[29px] items-center left-[66px] top-[608.5px] w-[479.094px]">
+              <Link
+                href={"/All" as any}
+                className="bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center px-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
+              >
+                <p className="font-semibold text-center">모두의 결산</p>
+                <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠑⠥⠊⠍⠺⠀⠈⠳⠇⠒</p>
+              </Link>
+              <Link
+                href={"/My" as any}
+                className="bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center px-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
+              >
+                <p className="font-semibold text-center">나의 결산</p>
+                <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠉⠣⠺⠈⠳⠇⠒</p>
+              </Link>
+            </div>
+
+            {/* 하단 텍스트 */}
+            <p className="absolute text-[24px] text-black text-center font-normal left-[305.55px] top-[724.5px] translate-x-[-50%] w-[479.094px]" style={{ fontFamily: FONT_FAMILY }}>
+              ⠡⠑⠂⠈⠳⠇⠒
+            </p>
           </div>
         </div>
 
