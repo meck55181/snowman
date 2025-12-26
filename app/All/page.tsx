@@ -279,7 +279,7 @@ export default function BoardPage() {
       {!loading && !error && (
         <>
           {/* 상단 왼쪽 돌아가기 링크 */}
-          <div className="absolute left-14 top-8 sm:left-[72px] sm:top-[40px] z-20 pointer-events-auto">
+          <div className="absolute left-8 top-8 sm:left-[72px] sm:top-[40px] z-20 pointer-events-auto">
             <Link
               href="/"
               className="text-[14px] sm:text-[16px] text-white hover:text-slate-300 transition-colors"
@@ -289,7 +289,7 @@ export default function BoardPage() {
           </div>
 
           {/* 상단 왼쪽 로고 (축소 버전) */}
-          <div className="absolute left-12 top-16 sm:left-[64px] sm:top-[80px] z-10 flex flex-col gap-[8px] items-center w-[80px] sm:w-[130px] pointer-events-none">
+          <div className="absolute left-10 top-16 sm:left-[64px] sm:top-[80px] z-10 flex flex-col gap-[8px] items-center w-[80px] sm:w-[130px] pointer-events-none">
             <div className="h-[20px] w-[72px] sm:h-[26px] sm:w-[118px] relative">
               <img 
                 alt="로고" 
