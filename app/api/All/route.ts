@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 // Force dynamic rendering - API routes should not be statically generated
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const revalidate = 0; // 캐싱 완전 비활성화
 
 // 서버 사이드에서 서비스 역할 키 사용 (RLS 우회)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -42,12 +43,14 @@ export async function GET(request: Request) {
         { ok: false, error: "Failed to load node" },
         { status: 500 }
       );
-      errorResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+      errorResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, s-maxage=0');
+      errorResponse.headers.set('x-vercel-cache-control', 'no-cache');
       return errorResponse;
     }
 
     const response = NextResponse.json({ ok: true, response: data });
-    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, s-maxage=0');
+    response.headers.set('x-vercel-cache-control', 'no-cache');
     return response;
   }
 
@@ -91,12 +94,16 @@ export async function GET(request: Request) {
     }
   }
 
-  // 캐시 방지 헤더 추가
+  // 캐시 방지 헤더 추가 (Vercel 포함)
   const response = NextResponse.json({ ok: true, responses: data ?? [] });
-  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0');
   response.headers.set('Pragma', 'no-cache');
   response.headers.set('Expires', '0');
   response.headers.set('X-Content-Type-Options', 'nosniff');
+  // Vercel 캐시 완전 비활성화
+  response.headers.set('x-vercel-cache-control', 'no-cache');
+  response.headers.set('CDN-Cache-Control', 'no-store');
+  response.headers.set('Vary', '*');
   
   return response;
 }
