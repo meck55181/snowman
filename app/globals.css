@@ -35,61 +35,6 @@ button {
   animation: blink 1.5s ease-in-out infinite;
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.animate-shimmer {
-  animation: shimmer 3s ease-in-out infinite;
-  background: linear-gradient(
-    90deg,
-    #95acac 0%,
-    #a8bdbd 50%,
-    #95acac 100%
-  );
-  background-size: 200% 100%;
-}
-
-@keyframes wave {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.animate-wave {
-  animation: wave 4s ease-in-out infinite;
-  background: linear-gradient(
-    45deg,
-    #95acac 0%,
-    #a8bdbd 25%,
-    #95acac 50%,
-    #a8bdbd 75%,
-    #95acac 100%
-  );
-  background-size: 200% 200%;
-}
-
-@keyframes pulse-bg {
-  0%, 100% {
-    background-color: #95acac;
-  }
-  50% {
-    background-color: #a8bdbd;
-  }
-}
-
-.animate-pulse-bg {
-  animation: pulse-bg 2s ease-in-out infinite;
-}
-
 /* 점자 폰트 적용 - Noto Sans Symbols 2 사용 */
 .braille {
   font-family: 'Noto Sans Symbols 2', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;

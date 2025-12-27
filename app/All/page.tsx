@@ -44,8 +44,8 @@ const VIEW_HEIGHT = 600;
 
 // Asterisk 아이콘 경로 (추천인 수에 따라)
 const ASTERISK_1_SRC = "/assets/asterisk_1.svg"; // 0명
-const ASTERISK_2_SRC = "/assets/asterisk_2.svg"; // 2명 이상
-const ASTERISK_3_SRC = "/assets/asterisk_3.svg"; // 5명 이상
+const ASTERISK_2_SRC = "/assets/asterisk_2.svg"; // 1명 이상
+const ASTERISK_3_SRC = "/assets/asterisk_3.svg"; // 2명 이상
 
 function lcg(seed: number) {
   let value = seed;
@@ -56,10 +56,10 @@ function lcg(seed: number) {
 }
 
 function getAsteriskSrc(count: number): string {
-  // 1명 이상: asterisk_1, 3명 이상: asterisk_2, 5명 이상: asterisk_3
-  if (count >= 5) return ASTERISK_3_SRC;
-  if (count >= 3) return ASTERISK_2_SRC;
-  return ASTERISK_1_SRC; // 0명 또는 1-2명
+  // 2명 이상: asterisk_3, 1명 이상: asterisk_2, 0명: asterisk_1
+  if (count >= 2) return ASTERISK_3_SRC;
+  if (count >= 1) return ASTERISK_2_SRC;
+  return ASTERISK_1_SRC; // 0명
 }
 
 export default function BoardPage() {
@@ -72,6 +72,18 @@ export default function BoardPage() {
   const [toggleQ2, setToggleQ2] = useState(false); // 질문 2 토글 상태 (초기값: 닫힘)
   const [toggleQ3, setToggleQ3] = useState(false); // 질문 3 토글 상태 (초기값: 닫힘)
   const [toggleQ4, setToggleQ4] = useState(false); // 질문 4 토글 상태 (초기값: 닫힘)
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 화면 크기 감지
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640); // sm breakpoint
+    };
+    
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // 모달이 열릴 때 토글 상태 초기화
   useEffect(() => {
@@ -318,6 +330,7 @@ export default function BoardPage() {
                   // 각 노드의 asterisk 중심 좌표 계산
                   const getAsteriskCenter = (node: PositionedNode) => {
                     const count = outgoingCounts.get(node.id) ?? 0;
+                    const scale = isMobile ? 1 : 0.5; // 데스크톱에서만 작게
                     let imgWidth = 28;
                     let imgHeight = 28;
                     let imgX = -14;
@@ -334,6 +347,12 @@ export default function BoardPage() {
                       imgX = -12;
                       imgY = -26;
                     }
+                    
+                    // scale 적용
+                    imgWidth *= scale;
+                    imgHeight *= scale;
+                    imgX *= scale;
+                    imgY *= scale;
                     
                     // asterisk 이미지의 중심 좌표
                     const centerX = node.x + imgX + imgWidth / 2;
@@ -371,6 +390,7 @@ export default function BoardPage() {
                 {nodes.map((node, idx) => {
                   const count = outgoingCounts.get(node.id) ?? 0;
                   const asteriskSrc = getAsteriskSrc(count);
+                  const scale = isMobile ? 1 : 0.75; // 데스크톱에서만 작게
                   // 이미지 크기 결정
                   let imgWidth = 28;
                   let imgHeight = 28;
@@ -388,6 +408,12 @@ export default function BoardPage() {
                     imgX = -12;
                     imgY = -26;
                   }
+                  
+                  // scale 적용
+                  imgWidth *= scale;
+                  imgHeight *= scale;
+                  imgX *= scale;
+                  imgY *= scale;
                   
                   // 첫 번째 노드만 로그 출력
                   if (idx === 0) {
@@ -455,7 +481,7 @@ export default function BoardPage() {
                 />
               </div>
               <p className="text-[10px] sm:text-[12px] text-white text-center w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
-                ≥1
+                0
               </p>
             </div>
             <div className="flex flex-col gap-[4px] sm:gap-[8px] items-start w-[16px] sm:w-[19.395px]">
@@ -467,7 +493,7 @@ export default function BoardPage() {
                 />
               </div>
               <p className="text-[10px] sm:text-[12px] text-white w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
-                ≥3
+                ≥1
               </p>
             </div>
             <div className="flex flex-col gap-[4px] sm:gap-[8px] items-start w-[15px] sm:w-[18px]">
@@ -479,7 +505,7 @@ export default function BoardPage() {
                 />
               </div>
               <p className="text-[10px] sm:text-[12px] text-white w-full font-normal" style={{ fontFamily: "'Pretendard', sans-serif" }}>
-                ≥5
+                ≥2
               </p>
             </div>
           </div>

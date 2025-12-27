@@ -74,7 +74,7 @@ export default function Home() {
     const logoOffset = isMobile ? logoHeight / 2 : 0;
     return {
       transform: `translate(-50%, calc(-50% + ${logoOffset}px)) scale(${scale})`,
-      zIndex: 10,
+    zIndex: 10,
     };
   }, [scale, logoHeight, isMobile]);
 
@@ -83,8 +83,8 @@ export default function Home() {
     const logoOffset = isMobile ? logoHeight / 2 : 0;
     return {
       transform: `translate(calc(-50% + 8.12px), calc(-50% + ${logoOffset}px - ${posterPageOffset}px + 14.38px)) rotate(8deg) scale(${scale})`,
-      opacity: posterPageOpacity,
-      zIndex: 20,
+    opacity: posterPageOpacity,
+    zIndex: 20,
       transition: 'transform 0.5s ease-out, opacity 0.5s ease-out',
     };
   }, [posterPageOffset, posterPageOpacity, scale, logoHeight, isMobile]);
@@ -121,69 +121,69 @@ export default function Home() {
             
             {/* 로고 */}
             <div className="absolute h-[87px] left-[224.74px] top-[38.5px] w-[161.616px]">
-              <img 
-                alt="연말정산 로고" 
+                <img 
+                  alt="연말정산 로고" 
                 className="block max-w-none size-full" 
                 src="/assets/tree_small.svg" 
-              />
-            </div>
-
-            {/* 첫 번째 질문 박스 */}
-            <div className="absolute bg-white border border-black border-solid flex h-[94px] items-center justify-center left-[67.05px] p-[6.212px] top-[153.5px] w-[477px]">
-              <div className="text-base font-medium text-black text-center leading-normal">
-                <p className="mb-0">이제 곧 2025년이 끝난다는 사실.</p>
-                <p>알고 계셨나요?</p>
+                />
               </div>
-            </div>
 
-            {/* 첫 번째 YES 박스 */}
+                {/* 첫 번째 질문 박스 */}
+            <div className="absolute bg-white border border-black border-solid flex h-[94px] items-center justify-center left-[67.05px] p-[6.212px] top-[153.5px] w-[477px]">
+                  <div className="text-base font-medium text-black text-center leading-normal">
+                    <p className="mb-0">이제 곧 2025년이 끝난다는 사실.</p>
+                    <p>알고 계셨나요?</p>
+                  </div>
+                </div>
+
+                {/* 첫 번째 YES 박스 */}
             <div className="absolute bg-white border border-black border-solid flex h-[52px] items-center justify-center left-[67.05px] p-[6.212px] top-[285.5px] w-[225px]">
-              <p className="text-base font-medium text-black">YES</p>
-            </div>
+                  <p className="text-base font-medium text-black">YES</p>
+                </div>
 
-            {/* 첫 번째 NO 박스 */}
+                {/* 첫 번째 NO 박스 */}
             <div className="absolute bg-white border border-black border-solid flex h-[52px] items-center justify-center left-[318.05px] p-[6.212px] top-[285.5px] w-[225px]">
-              <p className="text-base font-medium text-black">NO</p>
-            </div>
+                  <p className="text-base font-medium text-black">NO</p>
+                </div>
 
             {/* 두 번째 질문 박스 */}
             <div className="absolute bg-white border border-black border-solid flex h-[89px] items-center justify-center left-[67.05px] p-[6.212px] top-[375.5px] w-[225px]">
-              <div className="text-base font-medium text-black text-center leading-normal">
+                  <div className="text-base font-medium text-black text-center leading-normal">
                 <p className="mb-0">연말결산을</p>
-                <p>작성했나요?</p>
-              </div>
-            </div>
+                    <p>작성했나요?</p>
+                  </div>
+                </div>
 
-            {/* 두 번째 YES 박스 */}
+                {/* 두 번째 YES 박스 */}
             <div className="absolute bg-white border border-black border-solid flex h-[53px] items-center justify-center left-[67.05px] p-[6.212px] top-[501.5px] w-[225px]">
-              <p className="text-base font-medium text-black">YES</p>
-            </div>
+                  <p className="text-base font-medium text-black">YES</p>
+                </div>
 
-            {/* 두 번째 NO 박스 */}
+                {/* 두 번째 NO 박스 */}
             <div className="absolute bg-white border border-black border-solid flex h-[53px] items-center justify-center left-[318.05px] p-[6.212px] top-[501.5px] w-[225px]">
-              <p className="text-base font-medium text-black">NO</p>
-            </div>
+                  <p className="text-base font-medium text-black">NO</p>
+                </div>
 
-            {/* 화살표들 */}
-            {/* 1. 첫 번째 질문에서 YES로 가는 대각선 화살표 */}
+                {/* 화살표들 */}
+                {/* 1. 첫 번째 질문에서 YES로 가는 대각선 화살표 */}
             <div className="absolute flex h-[32px] items-center justify-center left-[187.22px] top-[247.08px] w-[117.651px] pointer-events-none">
               <div className="flex-none scale-x-[-100%]">
                 <div className="relative w-[119px] h-[33px]">
                   <img alt="" className="block max-w-none w-full h-full" src="/assets/Arrow 2.svg" />
                 </div>
               </div>
-            </div>
+                </div>
 
-            {/* 2. 첫 번째 질문에서 NO로 가는 대각선 화살표 */}
+                {/* 2. 첫 번째 질문에서 NO로 가는 대각선 화살표 */}
             <div className="absolute flex h-[32px] items-center justify-center left-[304.87px] top-[247.08px] w-[117.651px] pointer-events-none">
               <div className="flex-none">
                 <div className="relative w-[119px] h-[33px]">
                   <img alt="" className="block max-w-none w-full h-full" src="/assets/Arrow 2.svg" />
                 </div>
               </div>
-            </div>
+                </div>
 
-            {/* 3. 첫 번째 YES에서 두 번째 질문으로 가는 세로 화살표 */}
+                {/* 3. 첫 번째 YES에서 두 번째 질문으로 가는 세로 화살표 */}
             <div className="absolute flex h-[24px] items-center justify-center left-[179.55px] top-[337.5px] w-0 pointer-events-none">
               <div className="flex-none rotate-[90deg]">
                 <div className="h-0 relative w-[27px]">
@@ -203,7 +203,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
+                </div>
 
             {/* 5. 두 번째 질문에서 NO로 가는 대각선 화살표 */}
             <div className="absolute flex h-[38px] items-center justify-center left-[180px] top-[460px] w-[240px] pointer-events-none">
@@ -214,7 +214,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 6. 두 번째 YES에서 아래로 가는 세로 화살표 */}
+                {/* 6. 두 번째 YES에서 아래로 가는 세로 화살표 */}
             <div className="absolute flex h-[24px] items-center justify-center left-[180.05px] top-[554.5px] w-0 pointer-events-none">
               <div className="flex-none rotate-[90deg]">
                 <div className="h-0 relative w-[26px]">
@@ -225,7 +225,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 7. 두 번째 NO에서 아래로 가는 세로 화살표 */}
+                {/* 7. 두 번째 NO에서 아래로 가는 세로 화살표 */}
             <div className="absolute flex h-[24px] items-center justify-center left-[431.05px] top-[554.5px] w-0 pointer-events-none">
               <div className="flex-none rotate-[90deg]">
                 <div className="h-0 relative w-[26px]">
@@ -234,30 +234,30 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
 
             {/* 버튼들 */}
             <div className="absolute flex gap-[29px] items-center left-[66px] top-[608.5px] w-[479.094px]">
-              <Link
-                href={"/All" as any}
+                <Link
+                  href={"/All" as any}
                 className="animate-pulse-bg bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center px-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
-              >
-                <p className="font-semibold text-center">모두의 결산</p>
-                <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠑⠥⠊⠍⠺⠀⠈⠳⠇⠒</p>
-              </Link>
-              <Link
-                href={"/My" as any}
+                >
+                  <p className="font-semibold text-center">모두의 결산</p>
+                  <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠑⠥⠊⠍⠺⠀⠈⠳⠇⠒</p>
+                </Link>
+                <Link
+                  href={"/My" as any}
                 className="animate-pulse-bg bg-[#95acac] border border-black border-solid flex flex-col gap-[11.258px] h-[88px] items-center justify-center p-0 text-base text-black w-[225px] hover:opacity-90 transition-opacity cursor-pointer no-underline hover:no-underline"
-              >
-                <p className="font-semibold text-center">나의 결산</p>
-                <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠉⠣⠺⠈⠳⠇⠒</p>
-              </Link>
-            </div>
+                >
+                  <p className="font-semibold text-center">나의 결산</p>
+                  <p className="text-sm font-semibold" style={{ fontFamily: FONT_FAMILY }}>⠉⠣⠺⠈⠳⠇⠒</p>
+                </Link>
+              </div>
 
             {/* 하단 텍스트 */}
             <p className="absolute text-[24px] text-black text-center font-normal left-[305.55px] top-[724.5px] translate-x-[-50%] w-[479.094px]" style={{ fontFamily: FONT_FAMILY }}>
-              ⠡⠑⠂⠈⠳⠇⠒
-            </p>
+                ⠡⠑⠂⠈⠳⠇⠒
+              </p>
           </div>
         </div>
 
