@@ -697,6 +697,11 @@ export default function BoardPage() {
                         {selected.q_final_message || selected.final_message || '마지막 메시지 답변'}
                       </p>
                     </div>
+
+                    {/* 인스타 핸들 */}
+                    <p className="text-[10px] sm:text-[12px] text-black font-normal text-center w-full mt-[2px] sm:mt-[4px]">
+                      @{selected.insta || '인스타 핸들'}
+                    </p>
                   </div>
 
                 </div>
